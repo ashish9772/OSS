@@ -1,0 +1,61 @@
+<div class="layout-menu-container">
+  <div class="layout-menu-wrapper">
+    <ul class="nav flex-column">
+      <li class="nav-item active"  *ngIf = "apiService.memberHaveProject">
+        <a class="menu-link" routerLink="/dashboard" routerLinkActive="active-link">
+          <i class="fa fa-home" aria-hidden="true" style="font-size:20px;width: 20px;"></i>
+          <span class="layout-menuitem-text">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="menu-link" routerLink="/resoursedetails" routerLinkActive="active-link">
+          <i class="fa fa-info" aria-hidden="true" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Member Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item"  *ngIf = "apiService.memberHaveProject">
+        <a class="menu-link" routerLink="/projectcomp" routerLinkActive="active-link">
+          <i class="fa fa-tasks" aria-hidden="true" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Project Dashboard</span>
+        </a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="menu-link" routerLink="/adminedit" routerLinkActive="active-link">
+          <i class="fa fa-gear fa-spin" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Project Configuration</span>
+        </a>
+      </li> -->
+      <!-- <li class="nav-item">
+        <a class="menu-link" routerLink="/teaminfo" routerLinkActive="active-link">
+          <i class="fa fa-users" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Team Information</span>
+        </a>
+      </li> -->
+      <li class="nav-item"  *ngIf = "apiService.memberHaveProject"> 
+        <a class="menu-link" routerLink="/recruitment" routerLinkActive="active-link">
+          <i class="fa fa-question" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Recruitment</span>
+        </a>
+      </li>
+      <li class="nav-item"  *ngIf = "apiService.memberHaveProject">
+        <a class="menu-link" routerLink="/ideas" routerLinkActive="active-link">
+          <i class="fa fa-lightbulb-o" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Innovation</span>
+        </a>
+      </li>
+      <li class="nav-item"  *ngIf = "apiService.memberHaveProject">
+        <a class="menu-link" routerLink="/administration" routerLinkActive="active-link">
+          <i class="fa fa-asterisk fa-spin" style="font-size:20px; width: 20px;"></i>
+          <span class="layout-menuitem-text">Configuration</span>
+        </a>
+      </li>
+      <li class="nav-item"  *ngIf = "apiService.memberHaveProject">
+          <a class="menu-link" routerLink="/report" routerLinkActive="active-link">
+            <i class="fa fa-id-card-o" style="font-size:20px; width: 20px;"></i>
+            
+            <span class="layout-menuitem-text">report</span>
+          </a>
+        </li>
+    </ul>
+  </div>
+</div>

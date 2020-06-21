@@ -1,0 +1,146 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf ="getTechBlockerDetails.length > 0">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Technical Blockers</h5>
+    </div>
+    <!-- <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(createtask)">create new technical blocker</button>
+    </div> -->
+  </div>
+
+  <!-- Technical Blocker Table -->
+  <p-table [value]="getTechBlockerDetails" dataKey="techinicalBlockerId" editMode="row" [responsive]="true" class="mt-4">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-uppercase">techinical Blocker Id</th>
+        <th class="text-uppercase">project Id</th>
+        <th class="text-uppercase">created By</th>
+        <th class="text-uppercase">created Date</th>
+        <th class="text-uppercase">area</th>
+        <th class="text-uppercase">owner</th>
+        <th class="text-uppercase">description</th>
+        <th class="text-uppercase">analysis</th>
+        <th class="text-uppercase">fixed Details</th>
+        <th class="text-uppercase" style="width:200px;">technical Bloker Notes</th>
+        <th class="text-uppercase">status</th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td>{{rowData.techinicalBlockerId}}</td>
+        <td>{{rowData.projectId}}</td>
+        <td>{{rowData.assignName}} ({{rowData.createdBy}})</td>
+        <td>{{rowData.createdDate}}</td>
+        <td>{{rowData.area}}</td>
+        <td>{{rowData.ownerName}} ({{rowData.owner}})</td>
+        <td>{{rowData.description}}</td>
+        <td>{{rowData.analysis}}</td>
+        <td>{{rowData.fixedDetails}}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.technicalBlokerNotes"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.technicalBlokerNotes}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <option selected>Select</option>                
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="updatetechBlockerDetails()">SUBMIT</button>
+  <!-- Close -->
+  <!-- Technical Blocker Popup -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE NEW TECHNICAL BLOCKER</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task">
+      <form [formGroup]="addTechnicalBlockerForm">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Date </label>
+            <input type="text" class="form-control" readonly formControlName="date">
+            <!-- <p-calendar formControlName="date" [readonlyInput]="true"  [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" ></p-calendar> -->
+          </div>
+          <div class="col-md-4">
+            <label>Description</label>
+            <textarea class="form-control" formControlName="description" [rows]="2" [cols]="30" maxlength="100" pInputTextarea></textarea>
+            <!-- <input type="text" class="form-control" formControlName="description"> -->
+          </div>
+          <div class="col-md-4">
+            <label>Analysis</label>
+            <textarea class="form-control" formControlName="analysis" [rows]="2" [cols]="30" maxlength="100" pInputTextarea></textarea>
+            <!-- <input type="text" class="form-control" formControlName="analysis"> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label>Fix Detail</label>
+            <input type="text" class="form-control" formControlName="fixDetail">
+          </div>
+          <div class="col-md-4">
+            <label>Status</label>
+            <select class="form-control" formControlName="status">
+                <option value="New">New</option>
+              <option value="Open">Open</option>
+              <option value="hold">On-hold</option>
+              <option value="InProgress">InProgress</option>
+              <option value="Testing">Testing</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label>Owner</label>
+            <!-- <input type="text" class="form-control" formControlName="owner"> -->
+            <select class="form-control" formControlName="owner">
+              <option *ngFor="let member of taskService.teamMemberDetails" [value]="member.ein">{{member.name}}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label>Area</label>
+            <input type="text" class="form-control" formControlName="area">
+          </div>
+          <div class="col-md-8">
+            <label>Technical Bloker Note</label>
+            <input type="text" class="form-control" formControlName="technicalBlokerNotes">
+          </div>
+        </div>
+        <div class="addteamMembers mt-3">
+          <button type="button" [disabled]="!addTechnicalBlockerForm.valid" class="btn btn-sm btn-primary" (click)="submitTechnicalBlocker()">Submit Technical Blocker</button>
+          <p class="green" *ngIf="addTechnicalBlockerForm.valid">{{NoteMSG}}</p>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

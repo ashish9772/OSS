@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Report</h5>
+    <!-- <label for="projectId">Select Project ID :</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div> -->
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label for="projectId"> Select Project id</label>
+        <input type="text" #projtId class="form-control" id="projectId" list="project" [(ngModel)]="projectId" (change)="onChange()"
+          (focus)="onFocus()">
+        <datalist id="project">
+          <option *ngFor="let proId of projectData" value="{{proId.projectID}}">
+        </datalist>
+      </div>
+      <!-- <div class="form-group col-md-6">
+          <label for="projectName">Project Name</label>
+          <input type="text" class="form-control" id="projectName" formControlName="projectName" readonly>
+        </div> -->
+    </div>
+    <div class="row pt-3 pb-3" *ngIf="showDownload">
+      <div class="col-md-8">
+       <h6> Project Id :
+          <b>{{projectId}}</b> , Project Name :
+          <b>{{projectName}}</b></h6>
+      </div>
+    </div>
+    <div class="row" *ngIf="showDownload">
+      <div class="col-md-4">
+        <button class="btn btn-sm btn-primary" (click)="downloadFile()">Download</button>
+      </div>
+    </div>
+  </div>
+</div>

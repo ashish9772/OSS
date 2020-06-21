@@ -1,0 +1,102 @@
+
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf="taskProjectID !== ''">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Risk Details</h5>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(createtask)">create new risk</button>
+    </div>
+  </div>
+
+  <!-- Risk Table -->
+  <p-table [value]="getRiskDetails" dataKey="rsikID" editMode="row" [responsive]="true" class="mt-4" *ngIf = 'getRiskDetails.length > 0'>
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th>RISK ID</th> -->
+        <th>PROJECT NAME</th>
+        <th>CREATED BY</th>
+        <th>CREATED DATE</th>
+        <th>NOTES</th>
+        <th>STATUS</th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <!-- <td>{{rowData.rsikID}}</td> -->
+        <td>{{rowData.projectName}}</td>
+        <td>{{taskService.getNameByEIN(rowData.createdBy)}} ({{rowData.createdBy}})</td>
+        <td>{{rowData.createdDate}}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.notes"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.notes}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <option selected>Select</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="upadteRiskDetails()" *ngIf = 'getRiskDetails.length > 0'>SUBMIT</button>
+  <!-- CLose table -->
+  <!-- Risk create popup -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE RISK</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task">
+      <form [formGroup]="addRiskForm">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Created Date  </label>
+            <input type="text" formControlName="createdDate" class="form-control" readonly>
+          </div>          
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label>Notes  <sup style="color: red">*</sup></label>
+            <textarea class="form-control" formControlName="notes" [rows]="2" [cols]="30" maxlength="100" pInputTextarea></textarea>
+          </div>
+        </div>
+        <div class="addteamMembers mt-3">
+          <button type="button" [disabled]="!addRiskForm.valid" class="btn btn-sm btn-primary" (click)="submitAddRisk()">Submit Risk data</button>
+          <button class="btn btn-danger btn-sm add-margin"  (click)="onReset()">Reset</button>
+          <p class="green" *ngIf="addRiskForm.valid">{{NoteMSG}}</p>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

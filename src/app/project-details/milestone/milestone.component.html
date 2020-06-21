@@ -1,0 +1,825 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf="taskProjectID !== ''">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Milestone Details</h5>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateMileStone(createtask)">create new Milestone</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <p-table [value]="milestoneData" dataKey="mileStoneId" editMode="row" [responsive]="true" class="mt-4" *ngIf="milestoneData.length > 0">
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th class="text-uppercase">mileStone Id</th> -->
+        <th class="text-uppercase">project Name</th>
+        <th class="text-uppercase">created Date</th>
+        <th class="text-uppercase">created By</th>
+        <th class="text-uppercase">Notes</th>
+        <th class="text-uppercase">status</th>
+        <th style="width:8em"></th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <!-- <td>{{rowData.mileStoneId}}</td> -->
+        <td>{{rowData.projectName}}</td>
+        <td>{{rowData.createdDate}}</td>
+        <td>{{taskService.getNameByEIN(rowData.createdBy)}} ({{rowData.createdBy}})</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.notes"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.notes}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <!-- <option selected>Select</option> -->
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="InProgress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData,ri)"></button>
+        </td>
+        <td style="text-align:center">
+          <!-- <button class="btn btn-success btn-sm font-weight-bold" (click)="openCreateTask(milestoneTask,ri,rowData.mileStoneId)">SHOW TASK</button> -->
+          <button class="btn btn-success btn-sm font-weight-bold" (click)="showTask(ri,rowData.mileStoneId)">SHOW TASK</button>
+        </td>
+
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="updateMilestoneDetails()" *ngIf="milestoneData.length > 0">SUBMIT</button>
+  <!-- Close -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE NEW MILLESTONE</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="addMileStoneForm">
+        <div class="row">
+          <div class="col-md-6">
+            <label>Created Date </label>
+            <input type="text" formControlName="createdDate" class="form-control" readonly>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <label>Notes
+              <sup style="color: red">*</sup>
+            </label>
+            <textarea class="form-control" formControlName="notes" [rows]="2" [cols]="30" maxlength="100" pInputTextarea></textarea>
+          </div>
+        </div>
+        <div class="addteamMembers mt-3">
+          <button type="button" [disabled]="!addMileStoneForm.valid" class="btn btn-sm btn-primary" (click)="submitMileStone()">Submit Milestone data</button>
+          <button class="btn btn-danger btn-sm add-margin" (click)="onReset()">Reset</button>
+          <p class="green" *ngIf="addMileStoneForm.valid">{{NoteMSG}}</p>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>
+<div *ngIf="mileStoneTaskShow">
+  <div class="row mt-5">
+     <div class="col-6">
+        <h4 class="modal-title text-uppercase font-weight-bold">Milestone : {{selectedMileStoneId}} Tasks</h4>
+     </div>
+     <div class="col-6">
+        <button class="btn btn-primary btn-sm text-uppercase font-weight-bold mb-3 d-block float-right" (click)="addMileStoneStatus()">
+            <i class="fa fa-plus" aria-hidden="true" style="margin-right:4px;"></i>Add Task</button>
+     </div>
+     
+  </div>
+ 
+  <!-- <p-table [value]="mileStoneTaskData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf="mileStoneTaskData.length > 0; else mileStoneElse">
+    <ng-template pTemplate="header">
+      <tr>
+     
+        <th class="text-uppercase">ASSIGNED TO</th>
+        <th class="text-uppercase">ACTUAL START DATE</th>
+        <th class="text-uppercase">ACTUAL END DATE</th>
+        <th class="text-uppercase">PSTART DATE</th>
+        <th class="text-uppercase"> PEND DATE</th>
+        <th class="text-uppercase">TASK DESCRIPTION</th>
+        <th class="text-uppercase">STATUS</th>
+        <th style="width:8em"></th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+      
+        <td> {{rowData?.assignName}} ({{rowData.assignedTo}})</td>
+        <td>{{rowData.aStartDate}}</td>
+        <td>{{rowData.aEndDate}}</td>
+        <td>{{rowData.pStartDate}}</td>
+        <td>{{rowData.pEndDate}}</td>
+        <td>{{rowData.taskDescription}}</td>
+        <td>{{rowData.status}}</td>
+        <td>
+          <button (click)="showSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold">show SubTask</button>
+        </td>
+        <td>
+          <button (click)="addMileStoneSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold">Add SubTask</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table> -->
+  <p-table [value]="mileStoneTaskData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf ="mileStoneTaskData.length > 0;else mileStoneElse">
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th [ngClass]="{'common': commonValue}">TASK ID</th> -->        
+        <th [ngClass]="{'commonDate': taskWidthStyle}">ASSIGNED TO</th>
+        <th [ngClass]="{'commonDate': taskWidthStyle}">ACTUAL START DATE</th>
+        <th [ngClass]="{'commonDate': taskWidthStyle}">ACTUAL END DATE</th>
+        <th [ngClass]="{'fixDate': taskWidthStyle}">PSTART DATE</th>
+        <th [ngClass]="{'fixDate': taskWidthStyle}"> PEND DATE</th>
+        <th [ngClass]="{'commonDate': taskWidthStyle}">TASK DESCRIPTION</th>
+        <th [ngClass]="{'commonDate': taskWidthStyle}">STATUS</th>
+        <th style="width:8em"></th>
+        <th style="width:8em"></th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <!-- <td>{{rowData.taskId}}</td> -->
+    
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.assignedTo">
+                <!-- <option selected>Select</option> -->
+                <option *ngFor="let teammember of taskService.teamMemberDetails; let i = index;" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{taskService.getNameByEIN(rowData.assignedTo)}}
+            <!-- {{assign(rowData.assignedTo)}} -->
+               ({{rowData.assignedTo}})
+            </ng-template>
+            <!-- <ng-template pTemplate="output" [ngIf]="hideField1">
+              {{bindName}}
+            </ng-template> -->
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aStartDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aStartDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aEndDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aEndDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          {{rowData.pStartDate}}
+        </td>
+        <td>
+          {{rowData.pEndDate}}
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.taskDescription"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.taskDescription}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <!-- <option selected>Select</option> -->
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInitTask(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSaveTask(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancelTask(rowData, ri)"></button>
+        </td>
+        <td>
+          <button (click)="showSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold">show SubTask</button>
+        </td>
+        <td>
+          <button (click)="addMileStoneSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold">Add SubTask</button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <br>
+  <ng-template #mileStoneElse>
+    <div class="align-text">
+      <h5> No Tasks related to this MileStone</h5>
+    </div>
+  </ng-template>
+  <div class="clearfix">
+    <button class="btn btn-success btn-sm text-uppercase font-weight-bold"  (click)="updateMilestoneTaskDetails()">Submit</button>
+    
+  </div>
+</div>
+<div *ngIf="subTaskShowStatus">
+  <h4 class="modal-title text-uppercase font-weight-bold">Task: {{selectedSubTaskId}} subtasks</h4>
+  <!-- <p-table [value]="showSubTaskTableData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf="showSubTaskTableData.length > 0; else subTaskElse">
+    <ng-template pTemplate="header">
+      <tr>
+       
+        <th class="text-uppercase">ASSIGNED TO</th>
+        <th class="text-uppercase">ACTUAL START DATE</th>
+        <th class="text-uppercase">ACTUAL END DATE</th>
+        <th class="text-uppercase">PSTART DATE</th>
+        <th class="text-uppercase"> PEND DATE</th>
+        <th class="text-uppercase">DESCRIPTION</th>
+        <th class="text-uppercase">STATUS</th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+
+        <td>{{rowData.assignName}} ({{rowData.assignedTo}})</td>
+        <td>{{rowData.aStartDate}}</td>
+        <td>{{rowData.aEndDate}}</td>
+        <td>{{rowData.pStartDate}}</td>
+        <td>{{rowData.pEndDate}}</td>
+        <td>{{rowData.description}}</td>
+        <td>{{rowData.status}}</td>
+      </tr>
+    </ng-template>
+  </p-table> -->
+
+  <p-table [value]="showSubTaskTableData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf ="showSubTaskTableData.length > 0;else subTaskElse">
+    <ng-template pTemplate="header">
+      <tr>
+        <!-- <th [ngClass]="{'common': commonValue}">TASK ID</th> -->        
+        <th [ngClass]="{'commonDate': subtaskWidthStyle}">ASSIGNED TO</th>
+        <th [ngClass]="{'commonDate': subtaskWidthStyle}">ACTUAL START DATE</th>
+        <th [ngClass]="{'commonDate': subtaskWidthStyle}">ACTUAL END DATE</th>
+        <th [ngClass]="{'fixDate': subtaskWidthStyle}">PSTART DATE</th>
+        <th [ngClass]="{'fixDate': subtaskWidthStyle}"> PEND DATE</th>
+        <th [ngClass]="{'commonDate': subtaskWidthStyle}">DESCRIPTION</th>
+        <th [ngClass]="{'commonDate': subtaskWidthStyle}">STATUS</th>
+        <th style="width:8em"></th>
+    
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <!-- <td>{{rowData.taskId}}</td> -->
+    
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.assignedTo">
+                <!-- <option selected>Select</option> -->
+                <option *ngFor="let teammember of taskService.teamMemberDetails; let i = index;" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{taskService.getNameByEIN(rowData.assignedTo)}}
+            <!-- {{assign(rowData.assignedTo)}} -->
+               ({{rowData.assignedTo}})
+            </ng-template>
+            <!-- <ng-template pTemplate="output" [ngIf]="hideField1">
+              {{bindName}}
+            </ng-template> -->
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aStartDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aStartDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aEndDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aEndDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          {{rowData.pStartDate}}
+        </td>
+        <td>
+          {{rowData.pEndDate}}
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.description"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.description}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <!-- <option selected>Select</option> -->
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInitSubTask(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSaveSubTask(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancelSubTask(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template #subTaskElse>
+    <div class="align-text">
+      <h5>
+        No SubTasks
+      </h5>
+    </div>
+  </ng-template>
+  <div class="clearfix">
+    <button class="btn btn-success btn-sm text-uppercase font-weight-bold"  (click)="updateMilestoneSubTaskDetails()">Submit</button>
+    
+  </div>
+</div>
+<div *ngIf="addMileStoneTask" class="modal-body create-task ">
+  <h3 class="font-weight-bold mb-3 commom-header-color">CREATE NEW TASK</h3>
+  <form [formGroup]="addMileStoneTaskForm">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-weight-bold">Project ID:</label>
+          <input type="text" class="form-control form-control-sm" formControlName="projectID" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-weight-bold">MileStone ID:</label>
+          <input type="text" class="form-control form-control-sm" formControlName="mileStoneId" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-weight-bold">Assiged To:
+            <sup style="color: red">*</sup>
+          </label>
+          <select class="form-control form-control-sm" formControlName="assignedTo">
+
+            <option *ngFor="let teammember of taskService.teamMemberDetails" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="font-weight-bold">Actual Start Date :
+            </label>
+            <p-calendar formControlName="aStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)=
+              "getAstartValueTask(addMileStoneTaskForm.controls['aStartDate'].value)"></p-calendar>
+          </div>
+          <div class="col-md-6">
+            <label class="font-weight-bold">Actual End Date :</label>
+            <p-calendar formControlName="aEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="actualMinDateValueTask"  (onSelect)=
+              "taskService.getEndValue(addMileStoneTaskForm,'aStartDate','aEndDate')"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="font-weight-bold">PStart Date :
+              <sup style="color: red">*</sup>
+            </label>
+            <p-calendar formControlName="pStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)=
+              "getPstartValueTask(addMileStoneTaskForm.controls['pStartDate'].value)"></p-calendar>
+          </div>
+          <div class="col-md-6">
+            <label class="font-weight-bold">PEnd Date :
+              <sup style="color: red">*</sup>
+
+            </label>
+            <p-calendar formControlName="pEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="projMinDateValueSubTask"  (onSelect)=
+              "taskService.getEndValue(addMileStoneTaskForm,'pStartDate','pEndDate')"></p-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <label class="d-block font-weight-bold">Task Description :
+          <sup style="color: red">*</sup>
+        </label>
+        <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" formControlName="taskDescription"></textarea>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="font-weight-bold">Status:
+            <sup style="color: red">*</sup>
+          </label>
+          <input type="text" class="form-control form-control-sm" formControlName="status" readonly>
+        </div>
+      </div>
+    </div>
+  </form>
+  <button type="button" class="btn btn-success btn-sm" [disabled]="!addMileStoneTaskForm.valid" (click)="submitMileStoneTask()">SUBMIT</button>
+  <p class="green" *ngIf="addMileStoneTaskForm.valid">{{NoteMSG}}</p>
+</div>
+
+<div *ngIf="mileStoneSubTaskStatus" class="modal-body create-task">
+  <h4 class="font-weight-bold mb-3 commom-header-color text-uppercase">Add sub task</h4>
+  <form [formGroup]="addMileStoneSubTaskForm">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-weight-bold">Task ID:</label>
+          <input type="text" class="form-control form-control-sm" formControlName="taskId" readonly>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="font-weight-bold">Assiged To:
+            <sup style="color: red">*</sup>
+          </label>
+          <select class="form-control form-control-sm" formControlName="assignedTo">
+
+            <option *ngFor="let teammember of taskService.teamMemberDetails" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="font-weight-bold">Actual Start Date :</label>
+            <p-calendar formControlName="aStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)=
+              "getAstartValueSubTask(addMileStoneSubTaskForm.controls['aStartDate'].value)"></p-calendar>
+          </div>
+          <div class="col-md-6">
+            <label class="font-weight-bold">Actual End Date :</label>
+            <p-calendar formControlName="aEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="actualMinDateValueSubTask"  (onSelect)=
+              "taskService.getEndValue(addMileStoneSubTaskForm,'aStartDate','aEndDate')"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="font-weight-bold">PStart Date :
+              <sup style="color: red">*</sup>
+            </label>
+            <p-calendar formControlName="pStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)=
+              "getPstartValueSubTask(addMileStoneSubTaskForm.controls['pStartDate'].value)"></p-calendar>
+          </div>
+          <div class="col-md-6">
+            <label class="font-weight-bold">PEnd Date :
+              <sup style="color: red">*</sup>
+
+            </label>
+            <p-calendar formControlName="pEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="projMinDateValueSubTask"  (onSelect)=
+              "taskService.getEndValue(addMileStoneSubTaskForm,'pStartDate','pEndDate')"></p-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6">
+        <label class="d-block font-weight-bold"> Description :
+          <sup style="color: red">*</sup>
+        </label>
+        <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" formControlName="description"></textarea>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="font-weight-bold">Status:
+            <sup style="color: red">*</sup>
+          </label>
+          <input type="text" class="form-control form-control-sm" formControlName="status" readonly>
+        </div>
+      </div>
+    </div>
+  </form>
+  <button type="button" class="btn btn-success btn-sm" [disabled]="!addMileStoneSubTaskForm.valid" (click)="submitMileStoneSubTask()">SUBMIT</button>
+  <p class="green" *ngIf="addMileStoneSubTaskForm.valid">{{NoteMSG}}</p>
+</div>
+
+
+<!-- <ng-template #milestoneTask let-modal>
+    <div class="mile-stone-task">
+      <div class="modal-header">
+        <h4 class="modal-title text-uppercase font-weight-bold" id="modal-basic-title">MileStone Tasks</h4>
+        <button type="button" class="close" aria-label="Close" (click)="hideForm();modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <p-table [value]="mileStoneTaskData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf="mileStoneTaskData.length > 0; else mileStoneElse">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="text-uppercase">Task Id</th>
+            <th class="text-uppercase">ASSIGNED TO</th>
+            <th class="text-uppercase">ACTUAL START DATE</th>
+            <th class="text-uppercase">ACTUAL END DATE</th>
+            <th class="text-uppercase">PSTART DATE</th>
+            <th class="text-uppercase"> PEND DATE</th>
+            <th class="text-uppercase">TASK DESCRIPTION</th>
+            <th class="text-uppercase">STATUS</th>
+            <th style="width:8em"></th>
+            <th style="width:8em"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr [pEditableRow]="rowData">
+            <td>{{rowData.taskId}}</td>
+            <td>{{rowData.projectID}}</td>
+            <td>{{rowData.aStartDate}}</td>
+            <td>{{rowData.aEndDate}}</td>
+            <td>{{rowData.pStartDate}}</td>
+            <td>{{rowData.pEndDate}}</td>
+            <td>{{rowData.taskDescription}}</td>
+            <td>{{rowData.status}}</td>
+            <td>
+              <button (click)="showSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold" >show SubTask</button>
+            </td>
+            <td>
+              <button (click)="addMileStoneSubTask(rowData.taskId)" class="btn btn-success btn-sm text-uppercase font-weight-bold">Add SubTask</button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <br>
+      <ng-template #mileStoneElse>
+        <div class="align-text">
+          <h5> No Tasks related to this MileStone</h5>
+        </div>
+      </ng-template>
+      <div class="clearfix">
+       
+        <button class="btn btn-primary btn-sm text-uppercase font-weight-bold mb-3 d-block float-right" (click)="addMileStoneStatus()">
+          <i class="fa fa-plus" aria-hidden="true" style="margin-right:4px;"></i>Add Task</button>
+      </div>
+      <div *ngIf="subTaskShowStatus">
+        <h4 class="modal-title text-uppercase font-weight-bold">SubTasks Data</h4>
+        <p-table [value]="showSubTaskTableData" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4" *ngIf="showSubTaskTableData.length > 0; else subTaskElse">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-uppercase">Task Id</th>
+              <th class="text-uppercase">Sub Task Id</th>
+              <th class="text-uppercase">ASSIGNED TO</th>
+              <th class="text-uppercase">ACTUAL START DATE</th>
+              <th class="text-uppercase">ACTUAL END DATE</th>
+              <th class="text-uppercase">PSTART DATE</th>
+              <th class="text-uppercase"> PEND DATE</th>
+              <th class="text-uppercase">DESCRIPTION</th>
+              <th class="text-uppercase">STATUS</th>
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="rowData">
+              <td>{{rowData.taskId}}</td>
+              <td>{{rowData.subtaskId}}</td>
+              <td>{{rowData.assignedTo}}</td>
+              <td>{{rowData.aStartDate}}</td>
+              <td>{{rowData.aEndDate}}</td>
+              <td>{{rowData.pStartDate}}</td>
+              <td>{{rowData.pEndDate}}</td>
+              <td>{{rowData.description}}</td>
+              <td>{{rowData.status}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #subTaskElse>
+          <div class="align-text">
+            <h5>
+              No SubTasks
+            </h5>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngIf="addMileStoneTask" class="modal-body create-task ">
+        <h3 class="font-weight-bold mb-3 commom-header-color">CREATE NEW TASK</h3>
+        <form [formGroup]="addMileStoneTaskForm">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="font-weight-bold">Project ID:</label>
+                <input type="text" class="form-control form-control-sm" formControlName="projectID" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="font-weight-bold">MileStone ID:</label>
+                <input type="text" class="form-control form-control-sm" formControlName="mileStoneId" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="font-weight-bold">Assiged To:
+                  <sup style="color: red">*</sup>
+                </label>
+                <select class="form-control form-control-sm" formControlName="assignedTo">
+                  
+                  <option *ngFor="let teammember of taskService.teamMemberDetails" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="font-weight-bold">Actual Start Date :
+                  </label>
+                  <p-calendar formControlName="aStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)= "getAstartValueTask(addMileStoneTaskForm.controls['aStartDate'].value)"></p-calendar>
+                </div>
+                <div class="col-md-6">
+                  <label class="font-weight-bold">Actual End Date :</label>
+                  <p-calendar formControlName="aEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="actualMinDateValueTask" (onSelect)= "taskService.getEndValue(addMileStoneTaskForm,'aStartDate','aEndDate')"></p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="font-weight-bold">PStart Date :
+                    <sup style="color: red">*</sup>
+                  </label>
+                  <p-calendar formControlName="pStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)= "getPstartValueTask(addMileStoneTaskForm.controls['pStartDate'].value)"></p-calendar>
+                </div>
+                <div class="col-md-6">
+                  <label class="font-weight-bold">PEnd Date : <sup style="color: red">*</sup>
+                   
+                  </label>
+                  <p-calendar formControlName="pEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="projMinDateValueSubTask" (onSelect)= "taskService.getEndValue(addMileStoneTaskForm,'pStartDate','pEndDate')"></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="d-block font-weight-bold">Task Description :
+                <sup style="color: red">*</sup>
+              </label>
+              <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" formControlName="taskDescription"></textarea>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="font-weight-bold">Status:
+                  <sup style="color: red">*</sup>
+                </label>
+                <input type="text" class="form-control form-control-sm" formControlName="status" readonly>
+              </div>
+            </div>
+          </div>
+        </form>
+        <button type="button" class="btn btn-success btn-sm" [disabled]="!addMileStoneTaskForm.valid" (click)="submitMileStoneTask()">SUBMIT</button>
+        <p class="green" *ngIf="addMileStoneTaskForm.valid">{{NoteMSG}}</p>
+      </div>
+      <div *ngIf="mileStoneSubTaskStatus" class="modal-body create-task">
+        <h4 class="font-weight-bold mb-3 commom-header-color text-uppercase">Add sub task</h4>
+        <form [formGroup]="addMileStoneSubTaskForm">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="font-weight-bold">Task ID:</label>
+                <input type="text" class="form-control form-control-sm" formControlName="taskId" readonly>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="font-weight-bold">Assiged To:
+                  <sup style="color: red">*</sup>
+                </label>
+                <select class="form-control form-control-sm" formControlName="assignedTo">
+    
+                  <option *ngFor="let teammember of taskService.teamMemberDetails" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="font-weight-bold">Actual Start Date :</label>
+                  <p-calendar formControlName="aStartDate"  dateFormat="dd/mm/yy"  dataType='string' (onSelect)= "getAstartValueSubTask(addMileStoneSubTaskForm.controls['aStartDate'].value)"></p-calendar>
+                </div>
+                <div class="col-md-6">
+                  <label class="font-weight-bold">Actual End Date :</label>
+                  <p-calendar formControlName="aEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="actualMinDateValueSubTask" (onSelect)= "taskService.getEndValue(addMileStoneSubTaskForm,'aStartDate','aEndDate')"></p-calendar>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="font-weight-bold">PStart Date :
+                    <sup style="color: red">*</sup>
+                  </label>
+                  <p-calendar formControlName="pStartDate"  dateFormat="dd/mm/yy"  dataType='string'  (onSelect)= "getPstartValueSubTask(addMileStoneSubTaskForm.controls['pStartDate'].value)"></p-calendar>
+                </div>
+                <div class="col-md-6">
+                  <label class="font-weight-bold">PEnd Date : <sup style="color: red">*</sup>
+                    
+                  </label>
+                  <p-calendar formControlName="pEndDate"  dateFormat="dd/mm/yy"  dataType='string' [minDate]="projMinDateValueSubTask" (onSelect)= "taskService.getEndValue(addMileStoneSubTaskForm,'pStartDate','pEndDate')"></p-calendar>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="d-block font-weight-bold"> Description :
+                <sup style="color: red">*</sup>
+              </label>
+              <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" formControlName="description"></textarea>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="font-weight-bold">Status:
+                  <sup style="color: red">*</sup>
+                </label>
+                <input type="text" class="form-control form-control-sm" formControlName="status" readonly>
+              </div>
+            </div>
+          </div>
+        </form>
+        <button type="button" class="btn btn-success btn-sm" [disabled]="!addMileStoneSubTaskForm.valid" (click)="submitMileStoneSubTask()">SUBMIT</button>
+        <p class="green" *ngIf="addMileStoneSubTaskForm.valid">{{NoteMSG}}</p>
+      </div>
+    </div>
+  </ng-template> -->

@@ -1,0 +1,92 @@
+<!-- <div class="row">
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer " (click)="createUser()">
+    <a routerLink="manageprofile" routerLinkActive="active-link" class="menu-selection" >
+    <span class="iconText">
+        <span class="icon-text-image">
+          <span>Create User</span>
+        </span>
+      </span>
+    <div class="card center createUser">
+      <div class="card-body ">
+        <p class="card-text">Create User</p>
+      </div>
+
+    </div>
+    </a>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer ">
+    <a routerLink="user" routerLinkActive="active-link" class="menu-selection">
+      <span class="iconText">
+        <span class="icon-text-image">
+          <span>Manage User</span>
+        </span>
+      </span>
+    </a>
+    <div class="card center manageUser">
+      <div class="card-body ">
+        <p class="card-text">Manage User</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 align-top">
+    <div *ngIf="submitted" class="alert alert-success" role="alert">
+      {{submitMsg}}
+    </div>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer " >
+    <div class="card center " routerLink= 'profile' >
+      <div class="card-body ">
+        Profile
+        <!-- <a routerLink= 'profile' class="card-text">Profile</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer ">
+    <div class="card center "  routerLink="leads" >
+      <div class="card-body ">
+       Business Leads
+        <!-- <a routerLink="leads" class="card-text">Leads</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer " >
+    <div class="card center " routerLink = "resource-management">
+      <div class="card-body ">
+        Resource Management
+        <!-- <a routerLink = "resource-management" class="card-text">Resource Management</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer ">
+    <div class="card center " routerLink = "events">
+      <div class="card-body ">
+        Events
+        <!-- <a routerLink = "events" class="card-text">Events</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer " >
+    <div class="card center " routerLink="projectConfiguration">
+      <div class="card-body ">
+        Project Configuaration
+        <!-- <a routerLink="/adminedit" class="card-text">Project Configuaration</a> -->
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2 menu-selection-outer pointer ">
+    <div class="card center " routerLink = "revenue" >
+      <div class="card-body ">
+        Revenue
+        <!-- <a routerLink = "revenue" class="card-text">Revenue</a> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="template">
+  <router-outlet></router-outlet>
+</div>
+

@@ -1,0 +1,171 @@
+<ngx-spinner></ngx-spinner>
+<div class="resours mt-3">
+  <div class="mb-2 font-weight-bold ml-3">CHOOSE YOUR PROJECT :</div>
+  <div class="row">
+    <!-- <div class="col-md-4">
+      <div class="form-group">
+        <label>Select Project ID (select one):</label>
+        <select class="form-control mb-3" (change)="getProjectDetails($event.target.value)" [(ngModel)]="selectedProjectID">
+          <option selected>Select Project Id</option>
+          <option *ngFor="let projectvalue of allProjectDetails" [value]="projectvalue.projectId">{{projectvalue.projectId}}</option>
+        </select>
+      </div>
+    </div> -->
+    <div class="col-md-2" *ngFor="let projectvalue of allProjectDetails; let i = index" (click)="getProjectDetails(projectvalue.projectId, i)">
+      <input class="d-none" type="text" [value]="projectvalue.projectId">
+      <div class="card project-card-tab" [ngClass]="{'active':taskService.activeItem == i}">        
+        <div class="card-body">
+          <span>{{projectvalue.projectName}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-8 text-right" *ngIf="extractProjectDetails.length > 0">
+      <p class="font-weight-bold " style="font-size: 26px; ">Project Name: {{extractProjectDetails[0].projectConfig.projectName}}</p>
+    </div> -->
+  </div>
+  <!-- Dash Board -->
+  <div class="row pt-3" *ngIf="extractProjectDetails.length > 0">
+    <div class="col-md-3 pb-3" *ngFor="let data of projectData.statusCounts">
+
+      <div class="card" routerLink="{{data.type}}" routerLinkActive="active-link">
+        <div class="card-header">
+          {{data.type | uppercase }}
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            <p>New Task : {{data.new}}</p>
+            <p>Open Task: {{data.open}}</p>
+            <p>Closed Task: {{data.closed}}</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">{{data.new + data.open + data.closed}}</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-3">
+      <div class="card" routerLink="risk">
+        <div class="card-header">
+          RISK DETAILS
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8"> 
+            <p>New Task : {{projectData.statusCounts}}</p>
+            <p>Open Task: {{taskService.addRiskFormData._value[0].open}}</p>
+            <p>Closed Task: {{taskService.addRiskFormData._value[0].closed}}</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">15</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="col-md-3">
+      <div class="card" routerLink="technicalBlocker">
+        <div class="card-header">
+          TECHNICAL BLOCKER
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            <p>Open Task : 5</p>
+            <p>Inprogress Task: 5</p>
+            <p>Closed Task: 5</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">15</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card" routerLink="highPriorityIssues">
+        <div class="card-header">
+          HIGH PRIORITY ISSUES
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            <p>Open Task : 5</p>
+            <p>Inprogress Task: 5</p>
+            <p>Closed Task: 5</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">15</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mt-3">
+      <div class="card" routerLink="defects">
+        <div class="card-header">
+          DEFECTS
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            <p>Open Task : 5</p>
+            <p>Inprogress Task: 5</p>
+            <p>Closed Task: 5</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">15</p>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <div class="col-md-3 pb-3">
+      <div class="card" routerLink="notes" routerLinkActive="active-link">
+        <div class="card-header">
+          NOTES
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            Total Notes :
+          </div>
+          <div class="col-4">
+            <p class="total-count">{{projectNote}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 pb-3">
+      <div class="card" routerLink="documents">
+        <div class="card-header">
+          PROJECT DOCUMENT
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            Total Documents :
+          </div>
+          <div class="col-4">
+            <p class="total-count">{{projectDocCount}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-3 mt-3">
+      <div class="card" routerLink="milestone">
+        <div class="card-header">
+          MileStone
+        </div>
+        <div class="card-body font-weight-bold text-center text-uppercase row">
+          <div class="col-8">
+            <p>Open Task : 5</p>
+            <p>Inprogress Task: 5</p>
+            <p>Closed Task: 5</p>
+          </div>
+          <div class="col-4">
+            <p class="total-count">15</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- Display Details -->
+  <!-- Task Update Details -->
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

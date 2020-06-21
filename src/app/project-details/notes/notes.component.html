@@ -1,0 +1,80 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf="taskProjectID !== ''">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Note Details</h5>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(createtask)">create new Notes</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <p-table [value]="notesData" class="mt-4" *ngIf="notesData.length > 0">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-uppercase">project Name</th>
+        <th class="text-uppercase">created Date</th>
+        <th class="text-uppercase">created By</th>
+        <th class="text-uppercase">notes</th>
+        <th class="text-uppercase">type</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-notes>
+      <tr>
+        <td>{{notes.projectName}}</td>
+        <td>{{notes.notes}}</td>
+        <td>{{taskService.getNameByEIN(notes.createdBy)}} ({{notes.createdBy}})</td>
+        <td>{{notes.createdDate}}</td>
+        <td>{{notes.type}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="updateNotes()" *ngIf="notesData.length > 0">SUBMIT</button>
+  <!-- CLose -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE NEW Notes</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task">
+      <form [formGroup]="addNoteForm">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Date   </label>
+            <input type="text" class="form-control" readonly formControlName="date">
+            <!-- <p-calendar formControlName="date" [readonlyInput]="true"  [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" ></p-calendar> -->
+          </div>
+          <div class="col-md-4">
+            <label>Note Type  <sup style="color: red">*</sup></label>
+            <select class="form-control" formControlName="noteType">
+              <option value="general">General</option>
+              <option value="mom">MOM</option>
+            </select>
+          </div>
+          <!-- <div class="col-md-4">
+            <label>Created By</label>
+            <input type="text" class="form-control" formControlName="createdBy">
+            <p-calendar formControlName="date" [readonlyInput]="true"  [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" ></p-calendar>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label>Note  <sup style="color: red">*</sup></label>
+            <textarea class="form-control" formControlName="note"></textarea>
+          </div>
+        </div>
+
+
+        <div class="addteamMembers mt-3">
+          <button type="button" [disabled]="!addNoteForm.valid" class="btn btn-sm btn-primary" (click)="submitNote()">Submit Note</button>
+          <button class="btn btn-danger btn-sm add-margin"  (click)="onReset()">Reset</button>
+          <p class="green" *ngIf="addNoteForm.valid">{{NoteMSG}}</p>
+
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

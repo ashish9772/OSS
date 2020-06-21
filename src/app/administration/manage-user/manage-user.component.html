@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <p-table [value]="users">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>EIN</th>
+            <th>Full Name</th>
+            <th>Profile Name</th>
+            <th>User Id</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+          <tr>
+            <td>{{user.EIN}}</td>
+            <td>{{user.Full_Name}}</td>
+            <td>{{user.Profile_Name}}</td>
+            <td>{{user.User_Id}}</td>
+            <td>
+              <button pButton type="button" icon="pi pi-pencil" class="ui-button-info"></button>
+            </td>
+
+          </tr>
+
+
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

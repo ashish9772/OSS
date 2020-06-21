@@ -1,0 +1,88 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf="taskProjectID !== ''">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>DOCUMENTS</h5>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(projectdocument)"><i class="fa fa-upload mr-2" aria-hidden="true"></i>UPLOAD DOCUMENT</button>
+    </div>
+  </div>
+  <!-- Download Table -->
+  <div class="table-responsive" *ngIf='fileUploadDetails.length > 0'>
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th>FILE ID</th>
+          <th>PROJECT Name</th>
+          <th>FILE NAME</th>
+          <th>CREATED BY</th>
+          <th>CREATED DATE</th>
+          <th>FILE DESCRIPTION</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let uploadfiledetails of fileUploadDetails'>
+          <td>{{uploadfiledetails.fileId}}</td>
+          <td>{{uploadfiledetails.projectName}}</td>
+          <td>{{uploadfiledetails.fileName}}</td>
+          <td>{{uploadfiledetails.createdBy}}</td>
+          <td>{{uploadfiledetails.createdDate}}</td>
+          <td>{{uploadfiledetails.fileDescription}}</td>
+          <td class="text-center">
+            <button type="button" class="btn btn-info btn-sm font-weight-bold" (click)='downloadFile(uploadfiledetails.fileId)'><i class="fa fa-download mr-2" aria-hidden="true"></i>DOWNLOAD DOCUMENT</button>            
+          </td>
+          <td class="text-center">
+              <button type="button" class="btn btn-danger btn-sm font-weight-bold" (click)= 'remoevFile(uploadfiledetails.fileId)'><i class="fa fa-remove mr-2"></i>REMOVE DOCUMENT</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Close -->
+  <!-- POPUP -->
+  <ng-template #projectdocument let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">UPLOAD DOCUMENTS</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task clearfix">
+      <form [formGroup]="projectDocuments">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="fileName mb-2">FILE NAME : {{uploadFileName}}</div>
+            <div class="upload-btn-wrapper clearfix">
+              <button class="btn btn-primary text-center font-weight-bold text-uppercase btn-sm"><i class="fa fa-upload mr-2" aria-hidden="true"></i>Upload file</button>
+              <input type="file" name="myfile" id="documents" formControlName="uploadFile" (change)="uploadDocuments($event.target.files)"
+              />
+            </div>  
+            <div class="mt-2" *ngIf="hideFizeSize">{{filesizemsg}}</div>          
+          </div>
+          <div class="col-md-6" *ngIf = "fledecshow">
+            <label>File Description </label>
+            <textarea class="form-control" formControlName="description" [rows]="2" [cols]="30" maxlength="100" pInputTextarea></textarea>
+          </div>
+
+        </div>
+      </form>
+      <div class="sumbit-btn mt-3 float-right clearfix">
+        <button type="button" class="btn btn-sm btn-primary" (click)="submitDocuments()" [disabled]="disableButton" *ngIf = 'fledecshow'>Submit</button>
+        <p class="fileName">{{NoteMSG}}</p>
+      </div>
+    </div>
+
+    <!-- Multiple file uploaded -->
+    <!-- <p-fileUpload name="demo[]" customUpload="true" (uploadHandler)="myUploader($event)" multiple="multiple">
+      <ng-template pTemplate="content">
+        <ul *ngIf="uploadedFiles.length">
+          <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+        </ul>
+      </ng-template>
+    </p-fileUpload> -->
+    <!-- ENd -->
+  </ng-template>
+</div>

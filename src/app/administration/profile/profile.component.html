@@ -1,0 +1,109 @@
+<div class="row ">
+  <div class="col-sm-12 col-md-4 col-lg-6  menu-selection-outer pointer center-card "  (click)="createUser()">
+      <!-- <button class="btn btn-primary btn-size">Manage User</button> -->
+      <div class="container center-card">
+          <div class="card card-user align-items-center" style="width: 20rem;border:none">
+              <img class="avatar mt-2 " src="https://www.w3schools.com/howto/img_avatar.png" alt="Card image cap">
+              <div class="card-block text-center">
+                  <h4 class="card-title">Create User</h4>
+                  <p class="card-text">Create New User by EIN Number</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  <div class="col-sm-12 col-md-4 col-lg-6  menu-selection-outer pointer center-card ">
+    <!-- <button class="btn btn-primary btn-size">Manage User</button> -->
+    <div class="container center-card">
+        <div class="card card-user align-items-center" style="width: 20rem;border:none">
+            <img class="avatar mt-2 " src="https://www.w3schools.com/w3images/avatar2.png" alt="Card image cap">
+            <div class="card-block text-center">
+                <h4 class="card-title">Manage User</h4>
+                <p class="card-text">Manage Existing User</p>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+</div>
+<div class="padding-top">
+  <div *ngIf="clickCreateUser" class="container card pad2 clearfix">
+    <div class="card-body">
+    <h5 class="card-title">Create User</h5>
+      
+    
+    <form [formGroup]="createUserForm">
+      <div class="row">
+        <div class="input-group mb-3 col-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <i class='fa fa-user-o'></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="Ein" formControlName="ein">
+        </div>
+        <div *ngIf = "showSubmit" class="col-6 float-right">
+          <!-- <button type="button" class="btn btn-primary px-4" (click)="login()">Login</button> -->
+          <button (click)="searchEin()" class="btn btn-primary px-4 float-right">Submit</button>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="showUserDetails">
+      <hr>
+      <form [formGroup]="submitNewUserForm">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Name</label>
+            <input type="text" class="form-control" formControlName="name" readonly>
+          </div>
+          <div class="col-md-4">
+            <label>Email ID:</label>
+            <input type="text" class="form-control" formControlName="email" readonly>
+          </div>
+          <div class="col-md-4">
+            <label> Line Manager Name</label>
+            <input type="text" class="form-control" formControlName="managerName" readonly>
+          </div>
+          <div class="col-md-4">
+            <label>Skill</label>
+            <select class="form-control" formControlName="skill" (change)="onChangeValue()">
+              <option value="UI">UI</option>
+              <option value="Delivery">Delivery</option>
+              <option value="Java">Java</option>
+              <option value="Testing">Testing</option>
+              <option value="Design">Design</option>
+              <option value="stakeholder">Stakeholder</option>
+              <option value="others">Others</option>
+            </select>
+          </div>
+
+          <div class="col-md-4" *ngFor="let control of submitNewUserForm.controls.others.controls ">
+            <div [formGroup]="control">
+              <label>Ohter Skill</label>
+              <input type="text" formControlName="otherSkill" class="form-control" placeholder="other skill">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 float-right">
+          <button class="btn btn-danger px-4 addMarjin"  (click)="onCancel()">Cancel</button>
+          <button class="btn btn-primary px-4 addMarjin" [disabled]="!submitNewUserForm.valid" (click)="submitOSS()">Submit</button>
+          <!-- <p [ngStyle]="{'color' : 'green'}" *ngIf="submitted">{{submitMsg}}</p> -->
+        </div>
+    
+        
+
+      </form>
+     
+      <!-- {{ submitNewUserForm.value | json }} -->
+    </div>
+    <div role="alert" class="col-sm-12 col-md-4 col-lg-2" *ngIf="submitted" class="alert alert-success">
+        {{submitMsg}}
+      </div>
+    <div *ngIf="showWarning">
+      <div class="alert alert-danger" role="alert">
+        {{msg}}
+      </div>
+
+    </div>
+  </div>
+  </div>
+</div>

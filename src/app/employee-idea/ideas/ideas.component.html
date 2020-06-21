@@ -1,0 +1,112 @@
+<h3>Employee Idea's</h3>
+<p-table [value]="empDetails" editMode="row" dataKey="index">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Employee Name</th>
+      <th>Employee Project Name</th>
+      <th>Employee Idea</th>
+      <th>Employee Technology</th>
+      <th style="width:8em"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+    <tr [pEditableRow]="rowData">
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.empName">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.empName}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.empProject">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.empProject}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <textarea [rows]="2" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.empIdea"></textarea>
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.empIdea}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td>
+        <p-cellEditor>
+          <ng-template pTemplate="input">
+            <input pInputText type="text" [(ngModel)]="rowData.empTech">
+          </ng-template>
+          <ng-template pTemplate="output">
+            {{rowData.empTech}}
+          </ng-template>
+        </p-cellEditor>
+      </td>
+      <td style="text-align:center">
+        <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+        <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+          (click)="onRowEditSave(rowData)"></button>
+        <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+    <div style="text-align:left">
+      <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+    </div>
+  </ng-template>
+</p-table>
+
+<p-dialog header="ADD NEW EMPLOYEE DETAILS" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade"
+  [modal]="true" [style]="{width:'500px'}">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="vin">Employee Name</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="empName" [(ngModel)]="empadd.empName" autocomplete="off" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="year">Employee Project Name</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="empProject" [(ngModel)]="empadd.empProject" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="brand">Employee Idea</label>
+      </div>
+      <div class="ui-g-8">
+        <!-- <input pInputText id="empIdea" [(ngModel)]="empadd.empIdea" /> -->
+        <textarea [rows]="2" [cols]="30" pInputTextarea autoResize="autoResize" [(ngModel)]="empadd.empIdea"></textarea>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="color">Employee Technology</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="empTech" [(ngModel)]="empadd.empTech" />
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="closedialog()" label="Delete"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+    </div>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,248 @@
+<ngx-spinner></ngx-spinner>
+<div class="projectconfig">
+  <div class="row">
+    <div class="col-md-7">
+      <form [formGroup]="projectConfigForm">
+        <div class="row headingdesign">
+          <div class="col-md-12">
+            <h3 class="text-shadow ">PROJECT CONFIGURATION</h3>
+          </div>
+        </div>
+        <div class="row cardsmain">
+          <div class="col-md-6">
+            <div class="cards row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Project ID
+                    <sup class="red">*</sup>
+                  </label>
+                  <input type="number" class="form-control form-control-sm" formControlName="projectid" />
+                  <!-- <div *ngIf="submitted && f.projectid.errors" class="invalid-feedback">
+                  <div *ngIf="f.projectid.errors.required">Project ID is required</div>
+                </div> -->
+                </div>
+
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Project Name
+                    <sup class="red">*</sup>
+                  </label>
+                  <input type="text" class="form-control form-control-sm" formControlName="projectname" />
+                  <!-- <div *ngIf="submitted && f.projectname.errors" class="invalid-feedback">
+                  <div *ngIf="f.projectname.errors.required">Project Name is required</div>
+                </div> -->
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>PStart Date
+                    <sup class="red">*</sup>
+                  </label>
+                  <p-calendar formControlName="pstartdate" name="pstartdate1" dateFormat="dd/mm/yy" dataType='string'></p-calendar>
+                  <div *ngIf="submitted && f.pstartdate.errors" class="invalid-feedback">
+                    <div *ngIf="submitted && f.pstartdate.errors.required">PStart Date is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>PEnd Date
+                    <sup class="red">*</sup>
+                  </label>
+                  <p-calendar formControlName="penddate" dateFormat="dd/mm/yy" dataType='string'></p-calendar>
+                  <div *ngIf="submitted && f['penddate'].errors" class="invalid-feedback">
+                    <div *ngIf="f.penddate.errors.required">PEnd Date is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Actual Start Date
+                  </label>
+                  <p-calendar formControlName="astartdate" dateFormat="dd/mm/yy" dataType='string'></p-calendar>
+                  <div *ngIf="submitted && f.astartdate.errors" class="invalid-feedback">
+                    <div *ngIf="f.astartdate.errors.required">Actual Start Date is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label> Actual End Date
+                  </label>
+                  <p-calendar formControlName="aenddate" dateFormat="dd/mm/yy" dataType='string'></p-calendar>
+                  <div *ngIf="submitted && f.aenddate.errors" class="invalid-feedback">
+                    <div *ngIf="f.aenddate.errors.required">Actual End Date is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 ">
+                <button type="button" class="btn btn-success btn-sm" [disabled]="!projectConfigForm.valid" (click)="submitForm()">SUBMIT</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="cards row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Project Manager
+                    <sup class="red">*</sup>
+                  </label>
+                  <input type="text" class="form-control form-control-sm" formControlName="projectmanager" readonly />
+                  <!-- <div *ngIf="submitted && f.projectmanager.errors" class="invalid-feedback">
+                  <div *ngIf="f.projectmanager.errors.required">Project Manager is required</div>
+                </div> -->
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Technical Architect
+                    <sup class="red">*</sup>
+                  </label>
+                  <input type="text" class="form-control form-control-sm" formControlName="techarchitect" readonly />
+                  <!-- <div *ngIf="submitted && f.techarchitect.errors" class="invalid-feedback">
+                  <div *ngIf="f.techarchitect.errors.required">Technical Architect is required</div>
+                </div> -->
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Stakeholder Email ID / EIN
+                    <sup class="red">*</sup>
+                  </label>
+                  <input type="text" class="form-control form-control-sm" formControlName="stakeemail" readonly />
+                  <!-- <div *ngIf="submitted && f.stakeemail.errors" class="invalid-feedback">
+                  <div *ngIf="f.stakeemail.errors.required">Stakeholder Email ID / EIN</div>
+                </div> -->
+                </div>
+              </div>
+
+              <!-- <div class="col-md-12">
+              <div class="form-group">
+                <label>Choose Developers
+                  <sup class="red">*</sup>
+                </label>
+                <input type="text" class="form-control form-control-sm" formControlName="developer" readonly [ngClass]="{ 'is-invalid': submitted && f.developer.errors }">
+                <div *ngIf="submitted && f.developer.errors" class="invalid-feedback">
+                  <div *ngIf="f.developer.errors.required">Developers is required</div>
+                </div>
+              </div>
+            </div> -->
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Notes</label>
+                  <textarea class="form-control form-control-sm" [rows]="5" [cols]="5" pInputTextarea autoResize="autoResize" formControlName="notearea"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- team -->
+    <div class="col-md-5" *ngIf="projectConfigForm.get('projectid').value">
+      <div class="row headingdesign">
+        <div class="col-md-12">
+          <h3 class="text-shadow ">Choose Team Members and Role</h3>
+        </div>
+      </div>
+      <form [formGroup]="memberRoleForm">
+        <div class="row cardsmain">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Members List</label>
+              <!-- (change)="getMemberDetails($event.target.value)" -->
+              <select class="form-control form-control-sm" formControlName="memderList" (change)="getMemberDetails()">
+                <option value="select" selected>Select Member</option>
+                <option *ngFor='let member of teammember' [value]='member.ein'>{{member.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Team Role</label>
+              <!-- (change)="selectRole($event.target.value)" -->
+              <select class="form-control form-control-sm" formControlName="teamRole" (change)="selectRole()">
+                <option selected>Select Role</option>
+                <option *ngFor='let data of roleBind' [value]='data'>{{data}}</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="col-md-12 multiselect mb-2">
+            <label class="d-block">Select Multi Role</label>
+            <!-- [(ngModel)]="selectdrole.value" (onChange)='addValue()' -->
+            <p-multiSelect [options]="multiselct" formControlName="multiRole" (onChange)='addValue()'></p-multiSelect>
+
+            <button type="button" class="btn btn-success btn-sm" (click)="addAllDetail()" [disabled]="!memberRoleForm.valid">ADD MEMBER DETAILS</button>
+          </div>
+          <!-- <p>data : {{memberRoleForm.value | json}}</p> -->
+          <div class="col-md-12">
+            <div class="table-responsive" *ngIf='tableDisplay'>
+              <table class="table">
+                <thead class="headingdesign">
+                  <tr>
+                    <th>EIN</th>
+                    <th>Name</th>
+                    <th>EMAIL</th>
+                    <th>SKILL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let member of memberFiterdata; let i = index'>
+                    <td>{{member.ein}}</td>
+                    <td>{{member.name}}</td>
+                    <td>{{member.email}}</td>
+                    <td>{{member.skill}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <!-- 
+  <div class="assignTeamDetail" >
+    <h3 class="text-shadow"> Choose Team Members and Role</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Members List</label>
+          <select class="form-control form-control-sm" (change)="getMemberDetails($event.target.value)">
+            <option value="select" selected>Select Member</option>
+            <option *ngFor='let member of teammember' [value]='member.ein'>{{member.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Team Role</label>
+              <select class="form-control form-control-sm" (change)="selectRole($event.target.value)">
+                <option selected>Select Role</option>
+                <option *ngFor='let data of roleBind' [value]='data'>{{data}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 multiselect">
+            <label class="d-block">Select Multi Role</label>
+            <p-multiSelect [options]="multiselct" [(ngModel)]="selectdrole.value" (onChange)='addValue()'></p-multiSelect>
+            {{selectdrole}}  {{selectdrole.value}}      
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-success btn-sm" (click)="addAllDetail()">ADD MEMBER DETAILS</button>
+  </div> -->
+  <!-- Table -->
+
+
+</div>

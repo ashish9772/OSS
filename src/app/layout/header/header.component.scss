@@ -1,0 +1,17 @@
+.navbar {padding:0;}
+.navbar-dark{background-color: #000;}
+
+.navbar-collapse{width: 25%; position: absolute; right: 0;background-color: #000; color: #fff;top:39px;z-index: 1100}
+.navbar-nav{padding:10px;}
+.navbar-nav{padding:0;}
+.bg-dark{background-color: #175b9e !important;}
+.nav-link{color:#ffffffd4 !important;text-transform: uppercase;font-size: 16px;}
+.nav-item:hover {background: #d0c9c996; }
+.nav-link:hover{color:#fff !important;}
+.widthaddnew{width:60%;}
+// new layout
+
+.layout-topbar{background: linear-gradient(-206deg, #c1cead 5%, #00AADF 100%);padding:10px 16px;}
+.layout-logo{max-width:70px;}
+.logo{width:100%;}
+.header{position:fixed;z-index: 3;top:0;width:100%;}

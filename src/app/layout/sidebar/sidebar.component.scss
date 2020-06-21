@@ -1,0 +1,8 @@
+.layout-menuitem-text{letter-spacing: 0.5px; font-size: 12px;text-transform: uppercase; font-weight: 700; margin-left:12px; color:#524f4f;}
+.menu-link{display: block;padding: 8px 12px; color: #212121; position: relative;text-decoration: none;border-bottom: 1px solid #e4e2e0;}
+.menu-link:hover {background-color: #f1f1f1;}
+.menu-link:hover .layout-menuitem-text{color:#000;}
+.menu-link:hover .fa{color:#000;}
+//.layout-menuitem-text:hover{color:#000;font-weight:700;}
+.layout-menu-container .fa{color:#212529;}
+.active-link{background-color: #f2f5fa;color: #fff;}

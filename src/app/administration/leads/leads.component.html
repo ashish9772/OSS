@@ -1,0 +1,127 @@
+
+  <div class="container card pad2 clearfix">
+      <div class="card-body">
+   <h5 class="card-title ml-3" >Business Leads</h5>
+   <div>
+      <form [formGroup]="createUserForm">
+          <div class="row">
+            <div class="input-group mb-3 col-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class='fa fa-user-o'></i>
+                </span>
+              </div>
+              <input type="text" class="form-control" placeholder="Ein" formControlName="ein">
+            </div>
+            <div class="col-6 float-right" *ngIf="!showResourceForm">
+              <!-- <button type="button" class="btn btn-primary px-4" (click)="login()">Login</button> -->
+              <button (click)="searchEin()" class="btn btn-primary px-4 float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+
+   </div>
+    
+    <div *ngIf="showResourceForm">
+      <form [formGroup]="businessLeadsForm">
+        <div class="row">
+          <!-- <div class="form-group col-md-6">
+                    <label for="projectId">Project id</label>
+                    <input type="text" class="form-control" id="projectId" formControlName="projectId">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="projectName">Project Name</label>
+                    <input type="text" class="form-control" id="projectName" formControlName="projectName">
+                  </div> -->
+          <div class="form-group col-md-6">
+            <label for="clientName">Client Name </label>
+            <input type="text" class="form-control" id="clientName" formControlName="clientName" readonly>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="clientEmail">Client Email </label>
+            <input type="email" class="form-control" placeholder="email id" id="clientEmail" formControlName="clientEmail" readonly>
+          </div>
+          <div class="form-group col-md-6">
+
+            <label for="clientDesignation">Client Designation &nbsp; </label>
+            <input type="text" class="form-control" placeholder="email id" id="clientDesignation" placeholder="title" formControlName="clientDesignation">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="clientName" class="w-100">Notes </label>
+            <!-- <input type="text" class="form-control" id="clientName" formControlName="notes"> -->
+            <textarea [rows]="5" [cols]="50" pInputTextarea autoResize="autoResize" formControlName="notes"></textarea>
+          </div>
+
+          <div class="col-md-6  ">
+            <button class="btn btn-primary px-4 " [disabled]="!businessLeadsForm.valid" (click)="submitBussinessLeadsForm()">Submit</button>
+            <!-- <p [ngStyle]="{'color' : 'green'}" *ngIf="submitted">{{submitMsg}}</p> -->
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="showWarning">
+      <div class="alert alert-danger" role="alert">
+        {{msg}}
+      </div>
+
+
+    </div>
+    <div class="col-md-3 alert alert-success" *ngIf="submitted">
+        Data submitted successfully
+      </div>
+</div>
+    <!-- {{businessLeadsForm.value | json}} -->
+  </div>
+
+
+  <!-- <div class="container card pad2 clearfix">
+  <form [formGroup]="createBusinessLeadsForm">
+    <div class="row">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+           Project id 
+          </span>
+        </div>
+        <input type="text" class="form-control"  formControlName="projectId">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+           Project Name 
+          </span>
+        </div>
+        <input type="text" class="form-control"  formControlName="projectName">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+           Client Name  
+          </span>
+        </div>
+        <input type="text" class="form-control"  formControlName="clientName">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+           client Email id  
+          </span>
+        </div>
+        <input type="text" class="form-control"  formControlName="clientEmail">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroup">Client Designation</label>
+        </div>
+        <select class="custom-select" id="inputGroup" formControlName = "clientDesignation" >
+          <option selected>Choose...</option>
+          <option value="0">Tire 0</option>
+          <option value="1">tire 1</option>
+          <option value="2">Tire 2</option>
+          <option value="3">Tire 3</option>
+          <option value="4">Tire 4</option>
+        </select>
+      </div>   
+    </div>
+  </form>
+</div> -->

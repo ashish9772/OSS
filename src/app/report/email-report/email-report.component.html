@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Email Report</h5>
+      <div class="row" *ngIf="!hideProjSelect">
+        <div class="form-group col-md-8">
+          <label for="projectId"> Select Project id</label>
+          <input type="text" #projtId class="form-control" id="projectId" list="project" [(ngModel)]="projectId" (change)="onChange()" >
+          <datalist id="project">
+            <option *ngFor="let proId of projectData" value="{{proId.projectID}}">
+          </datalist>
+        </div>
+      </div>
+      <div class="row pt-3 pb-3" *ngIf="sendEmail">
+        <div class="col-md-8">
+          <h6>Project Id :
+              <b>{{projectId}}</b> , Project Name :
+              <b>{{projectName}}</b></h6>
+        </div>
+      </div>
+      <div *ngIf="hideProjSelect">
+          <form>
+              <div class="form-group">
+                <label for="toMailIDs">To Email address</label>
+                <input type="email" class="form-control" id="toMailIDs" aria-describedby="emailHelp" placeholder="Enter email" (keyup)="onValueChange($event)">
+                              
+                <!-- <ng-container *ngFor = "let mail of Email">
+                    <span>{{mail}} &nbsp;<span aria-hidden="true">&times;</span> </span>
+                </ng-container> -->
+              </div>
+           
+              <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="CCMailIds" (click)="addCCEmailList($event.target.checked)">
+                <label class="form-check-label" for="CCMailIds">Add CC list</label>
+              </div>
+              <div class="form-group" *ngIf="addCCMailList">
+                  <label for="exampleInputEmail1">CC Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" (keyup)="onValueChange($event)">
+                                
+                  <!-- <ng-container *ngFor = "let mail of Email">
+                      <span>{{mail}} &nbsp;<span aria-hidden="true">&times;</span> </span>
+                  </ng-container> -->
+                </div>
+             
+            </form>
+      </div>
+      <div class="row" *ngIf="sendEmail">
+        <div class="col-md-4">
+          <button class="btn btn-sm btn-danger" (click)="onCancel()">cancel</button>
+          <button class="btn btn-sm btn-primary ml-3" (click)="onDownload()">submit</button>
+        </div>
+      </div>
+    </div>
+  </div>

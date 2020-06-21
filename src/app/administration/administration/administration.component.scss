@@ -1,0 +1,78 @@
+.menu-selection-outer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.menu-selection {
+    height: 150px;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    font-family: "BTFont_Bd";
+    width: 100%;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.iconText {
+    display: table;
+    color: #333333;
+    padding: 0;
+    font-size: 14px;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    box-shadow: 0px 5px 12px 0px #986cef;
+}
+span.icon-text-image {
+    display: table-cell;
+    vertical-align: middle;
+    line-height: normal;
+    height: inherit;
+    margin: 0;
+}
+.row{margin-right: 0;}
+.center{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    
+}
+.card-body{
+    padding-top: 10px;
+    font-size: 14px;
+    background-color: #00aadf;
+    color: white;
+    height: 63px;
+}
+
+
+.card:hover {
+    /* the other rules */
+    transition: height 0.3s, box-shadow 0.3s;
+  }
+ .pointer{
+     cursor: pointer;
+ }
+
+  .createUser{
+    background-color: chartreuse;
+    color: #000;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .manageUser{
+    background-color: coral;
+    color: #000;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  
+
+
+  .template{
+    //   height: 100vh;
+    //   width: 100%;
+      margin-top: 10px;
+      //margin-left: 30px;
+      padding: 0px;
+  }

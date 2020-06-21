@@ -1,0 +1,193 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task mt-5" *ngIf = "getTaskDetails.length > 0">
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Task Details</h5>
+    </div>
+    <!-- <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(createtask)">create new task</button>
+    </div> -->
+  </div>
+  <!-- Get Data Binding -->
+  <p-table [value]="getTaskDetails" dataKey="taskId" editMode="row" [responsive]="true" class="mt-4">
+    <ng-template pTemplate="header">
+      <tr>
+        <th [ngClass]="{'common': commonValue}">TASK ID</th>
+        <th [ngClass]="{'common': commonValue}">PROJECT ID</th>
+        <th [ngClass]="{'commonDate': commonValue}">ASSIGNED TO</th>
+        <th [ngClass]="{'commonDate': commonValue}">ACTUAL START DATE</th>
+        <!-- <th [ngClass]="{'commonDate': commonValue}">ACTUAL END DATE</th> -->
+        <th [ngClass]="{'commonDate': commonValue}">PSTART DATE</th>
+        <!-- <th [ngClass]="{'commonDate': commonValue}"> PEND DATE</th> -->
+        <th [ngClass]="{'commonDate': commonValue}">TASK DESCRIPTION</th>
+        <th [ngClass]="{'commonDate': commonValue}">STATUS</th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td>{{rowData.taskId}}</td>
+        <td>{{rowData.projectID}}</td>
+        <td>
+            {{rowData.assignName}} ({{rowData.assignedTo}})
+          <!-- <p-cellEditor> -->
+            <!-- <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.assignedTo" (onChange)="updateName($event.target.value)">
+                <option selected>Select</option>
+                <option *ngFor="let teammember of taskService.teamMemberDetails; let i = index;" [ngValue]="teammember.name +' (' + teammember.ein + ')' ">{{teammember.name}} ({{teammember.ein}})</option>
+              </select>
+            </ng-template> -->
+            <!-- <ng-template pTemplate="output">
+              {{rowData.assignedTo}} 
+            </ng-template> -->
+            <!-- <ng-template pTemplate="output" [ngIf]="hideField1">
+              {{bindName}}
+            </ng-template> -->
+          <!-- </p-cellEditor> -->
+        </td>
+        <td> {{rowData.aStartDate}}
+          <!-- <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aStartDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aStartDate}}
+            </ng-template>
+          </p-cellEditor> -->
+        </td>
+        <!-- <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.aEndDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.aEndDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td> -->
+        <td>
+          {{rowData.pStartDate}}
+        </td>
+        <!-- <td>
+          {{rowData.pEndDate}}
+        </td> -->
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.taskDescription"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.taskDescription}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <option selected>Select</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="upadteTaskDetails()">SUBMIT</button>
+
+  <!-- task create popup -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE NEW TASK</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task">
+      <form [formGroup]="newtaskcreate">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="font-weight-bold">Project ID:</label>
+              <input type="text" class="form-control form-control-sm" formControlName="projectID" readonly>
+              <!-- <select class="form-control form-control-sm" formControlName="projectID">
+                  <option selected>Select</option>
+                  <option *ngFor="let id of projectIdList" [ngValue]='id'>{{id}}</option>
+                </select> -->
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="font-weight-bold">Task ID:</label>
+              <input type="text" class="form-control form-control-sm" formControlName="taskId" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="font-weight-bold">Assiged To:</label>
+              <select class="form-control form-control-sm" formControlName="assignedTo">
+                <option selected>Select</option>
+                <option *ngFor="let teammember of assignto" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="font-weight-bold">Actual Start Date :</label>
+                <p-calendar formControlName="aStartDate"  dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+              </div>
+              <div class="col-md-6">
+                <label class="font-weight-bold">Actual End Date :</label>
+                <p-calendar formControlName="aEndDate"  dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <label class="font-weight-bold">PStart Date :</label>
+                <p-calendar formControlName="pStartDate"  dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+              </div>
+              <div class="col-md-6">
+                <label class="font-weight-bold">PEnd Date :</label>
+                <p-calendar formControlName="pEndDate"  dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label class="d-block font-weight-bold">Task Description :</label>
+            <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" formControlName="taskDescription"></textarea>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label class="font-weight-bold">Status:</label>
+              <input type="text" class="form-control form-control-sm" formControlName="status" readonly>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button type="button" class="btn btn-success" (click)="taskCreateSubmit()">SUBMIT</button>
+    </div>
+  </ng-template>
+</div>

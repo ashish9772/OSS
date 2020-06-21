@@ -1,0 +1,73 @@
+<div class="padding-top">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title">
+          <h3>Resource Requirement </h3>
+      </div>
+
+      <form [formGroup]="resourceRequirementForm">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="projectId">Project id</label>
+              <input type="text" class="form-control" id="projectId" list="project" formControlName="projectId" (change)="onChange()"  >
+              <datalist id ="project">
+                <option *ngFor = "let proId of projectData" value="{{proId.projectID}}">
+              </datalist>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="projectName">Project Name</label>
+              <input type="text" class="form-control" id="projectName" formControlName="projectName" readonly>
+            </div>
+      
+            <div class="form-group col-md-6">
+              <label for="jobDescription">Job Description </label>
+              <input type="text" class="form-control" id="jobDescription" formControlName="jobDescription">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="noOfResources">No.of Resource </label>
+              <input type="number" class="form-control" id="noOfResources" formControlName="noOfResources">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="skill">Skill :&nbsp;  </label>
+              <input type="text" class="form-control" id="jobDescription" formControlName="skill">
+              <!-- <select class="custom-select" id="skill" formControlName="skill">
+                <option selected>Choose...</option>
+                <option value="aava">Java</option>
+                <option value="angular">Angular</option>
+                <option value="python">Python</option>
+              </select> -->
+            </div>
+            <div class="form-group col-md-3 dropdown-padding">
+              <label for="tier">Tier : &nbsp; </label>
+              <select class="custom-select" id="tier" formControlName="tier">
+                <option selected>Choose...</option>
+                <option value="0">Tier 0</option>
+                <option value="1">Tier 1</option>
+                <option value="2">Tier 2</option>
+                <option value="3">Tier 3</option>
+                <option value="4">Tier 4</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3 dropdown-padding">
+              <label for="location">Location : &nbsp; </label>
+              <select class="custom-select" id="location" formControlName="location">
+                <option selected>Choose...</option>
+                <option value="bangalore">Bangalore</option>
+                <option value="chennai">Chennai</option>
+              </select>
+            </div>
+      
+            <div class="col-md-6 add-padding-btn">
+              <button class="btn btn-primary px-4" [disabled]="!resourceRequirementForm.valid" (click)="submitResourceReqForm()">Submit</button>
+              <!-- <p [ngStyle]="{'color' : 'green'}" *ngIf="submitted">{{submitMsg}}</p> -->
+            </div>
+          </div>
+        </form>
+        <div class="col-md-3"  role="alert"  *ngIf="submitted" class="alert alert-success" >
+            Data submitted successfully
+          </div>
+    </div>
+  </div>
+ 
+  <!-- {{resourceRequirementForm.value | json}} -->
+</div>

@@ -1,0 +1,42 @@
+<div class="main-wrapper">
+  <div class="download clearfix float-right">
+    <button type="button" class="btn btn-success" (click)="download()">
+      <i class="fa fa-download mr-1"></i>Download</button>
+  </div>
+  <div [formGroup]="form">
+    <p-tabView>
+      <p-tabPanel header="UI" leftIcon="pi pi-calendar">
+        <div class="ui-mcq" [formArrayName]="'uiquestions'">
+          <div #uiquestions>
+            <div class="ques-ans" *ngFor="let dt of uidata; let i = index">
+              <ng-container [formGroupName]="i">
+                <span>Q {{i+1}}. {{dt?.questions}}</span>
+                <!-- <input type="text" formControlName ="questions"> -->
+                <br>
+                <span *ngIf="dt?.code != null">
+                  {{dt.code}}
+                </span>
+                <!-- <input type="text" formControlName ="code"> -->
+                <br>
+                <div *ngFor="let opt of dt.options; let i = index">
+                  <input type="radio" name="options{{i}}" value="{{opt}}" (change)="bindAns($event.target.value, i)">{{i+1}}) {{opt}}
+                </div>
+                <br>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <button type="button" (click)="submitForm(form.value, 'UI')" class="btn btn-success">Submit</button>
+      </p-tabPanel>
+      <!-- </div> -->
+      <p-tabPanel header="JAVA" leftIcon="pi pi-inbox">
+        Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film
+        <button type="button" (click)="submitForm(form.value, 'Java')" class="btn btn-success">Submit</button>
+      </p-tabPanel>
+      <p-tabPanel header="CAMUNDA" leftIcon="pi pi-user" rightIcon="pi pi-star">
+        After a break of more than 15 years
+        <button type="button" (click)="submitForm(form.value, 'Camunda')" class="btn btn-success">Submit</button>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

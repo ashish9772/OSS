@@ -1,0 +1,535 @@
+<ngx-spinner></ngx-spinner>
+<div class="project-task defectdetails mt-5" *ngIf = 'defectdata.length > 0'>
+  <div class="row clearfix mb-5">
+    <div class="col-md-9">
+      <h5>Defect Details</h5>
+    </div>
+    <!-- <div class="col-md-3">
+      <button type="button" class="btn btn-primary text-center font-weight-bold text-uppercase d-block float-right btn-sm" (click)="openCreateTask(createtask)">create new Defect</button>
+    </div> -->
+  </div>
+  <!-- Table -->
+  <p-table [value]="defectdata" dataKey="defectID" editMode="row" class="mt-4">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-uppercase" style="width:67px">DEFECT ID</th>
+        <th class="text-uppercase" style="width:189px">SUMMARY</th>
+        <th class="text-uppercase">raised On date</th>
+        <th class="text-uppercase">priority</th>
+        <th class="text-uppercase">functional area</th>
+        <th class="text-uppercase">actual FixDate</th>
+        <th class="text-uppercase"> assigned To</th>
+        <th class="text-uppercase">description</th>
+        <th class="text-uppercase">subject</th>
+        <th class="text-uppercase"> STATUS</th>
+        <th style="width:8em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td>{{rowData.defectID}}</td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="4" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.summary"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.summary}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.raisedOndate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.raisedOndate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.priority">
+                <option selected>Select</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.priority}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="rowData.functionalarea">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.functionalarea}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <p-calendar [(ngModel)]="rowData.actualFixDate" dateFormat="dd/mm/yy"  dataType='string'></p-calendar>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.actualFixDate}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+            {{rowData.assignName}} ({{rowData.assignedTo}})
+          <!-- <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.assignedTo">
+                <option selected>Select</option>
+                <option *ngFor="let teammember of taskService.teamMemberDetails; let i = index;" [ngValue]='teammember.ein'>{{teammember.name}}</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.assignedTo}}
+            </ng-template>
+          </p-cellEditor> -->
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <textarea [rows]="5" [cols]="20" pInputTextarea autoResize="autoResize" [(ngModel)]="rowData.description"></textarea>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.description}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="rowData.subject">
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.subject}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <select class="form-control form-control-sm" [(ngModel)]="rowData.status">
+                <option selected>Select</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="On Hold">On Hold</option>
+                <option value="Completed">Completed</option>
+                <option value="In Testing">In Testing</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.status}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align:center">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"
+            (click)="onRowEditSave(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" class="btn btn-success btn-sm mt-3" (click)="upadteDefectDetails()">SUBMIT</button>
+  <!-- Close Table -->
+  <!-- Popup -->
+  <ng-template #createtask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">CREATE NEW DEFECT</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body create-task">
+      <form [formGroup]="addDefects">
+        <!-- <form [formGroup]="addDefects" (ngSubmit)="onSave(adminEditableForm.value)"> -->
+        <p-accordion>
+          <p-accordionTab header="Bulk Upload.." id="modal-basic-titlee">
+            <!-- <h4 class="modal-header" id="modal-basic-titlee">Bulk Upload..</h4> -->
+            <!-- <ul class = "list-inline"> -->
+            <li class="col-md-8 col-sm-8 padding-li">
+              <p class="chooseFile"> {{fileName}}</p>
+              <div class="custom-file-upload">
+                <label for="file-upload" class="custom-file-upload1">
+                  <i class="fa fa-info-circle" style="margin-right: 2px;" aria-hidden="true"></i> Choose File
+                </label>
+                <input id="file-upload" #fileUpload (change)="incomingfile($event)" type="file" />
+                <button type="button" class="btn btn-primary" (click)="Upload()">Upload</button>
+                <!-- <button class="btn btn-primary" class="btn btn-primary mr-1 btn-sm clearfix float-center" >Submit</button> -->
+              </div>
+            </li>
+            <!-- </ul> -->
+          </p-accordionTab>
+
+
+
+
+
+
+          <p-accordionTab header="Manual Upload" id="modal-basic-title">
+            <!-- <h4 class="modal-title" id="modal-basic-titlee">Manual Upload</h4> -->
+            <div class="row">
+              <div class="col-md-4">
+                <label>Summary</label>
+
+                <textarea [rows]="2" [cols]="30" maxlength="100" pInputTextarea formControlName="Summary" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Summary.errors }"></textarea>
+                <div *ngIf="submitted && f.Summary.errors" class="invalid-feedback">
+                  <div id="1" *ngIf="f.Summary.errors.required">Summary is required</div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+
+                <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Status</label>
+                <select class="form-control" formControlName="Status" id="Status">
+                  <!-- <option selected>Status...</option> -->
+                  <option selected value="Open">Open</option>
+                  <option value="InProgress">InProgress</option>
+                  <option value="Closed">Closed</option>
+                </select>
+
+              </div>
+
+              <div class="col-md-4">
+                <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Severity</label>
+                <select class="form-control" formControlName="Severity" id="Severity">
+                  <!-- <option selected>Severity...</option> -->
+                  <option selected value="1">Severity1</option>
+                  <option value="2">Severity2</option>
+                  <option value="3">Severity3</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-4">
+                <label>Raised On date</label>
+                <!-- <input type="text" formControlName="RaisedOndate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RaisedOndate.errors }"
+                        />-->
+                <p-calendar formControlName="RaisedOndate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+                <div *ngIf="submitted && f.RaisedOndate.errors" class="invalid-feedback">
+                  <div *ngIf="f.RaisedOndate.errors.required">Raised On date is required</div>
+                </div>
+
+              </div>
+
+              <div class="col-md-4">
+                <label>Priority</label>
+                <input type="text" formControlName="Priority" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Priority.errors }"
+                />
+                <div *ngIf="submitted && f.Priority.errors" class="invalid-feedback">
+                  <div *ngIf="f.Priority.errors.required">Priority is required</div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <label>Environment</label>
+                <!-- <input type="text" formControlName="Environment" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Environment.errors }"
+                        /> -->
+                <select class="form-control" formControlName="Environment" id="Environment">
+                  <!-- <option selected>Severity...</option> -->
+                  <option selected value="1">Environment1</option>
+                  <option value="2">Environment2</option>
+                  <option value="3">Environment3</option>
+                </select>
+                <div *ngIf="submitted && f.Environment.errors" class="invalid-feedback">
+                  <div *ngIf="f.Environment.errors.required">Environment is required</div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-4">
+                <label>Functional area</label>
+                <input type="text" formControlName="Functionalarea" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Functionalarea.errors }"
+                />
+                <div *ngIf="submitted && f.Functionalarea.errors" class="invalid-feedback">
+                  <div *ngIf="f.Functionalarea.errors.required">Functionalarea is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Type</label>
+                <input type="text" formControlName="Type" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Type.errors }"
+                />
+                <div *ngIf="submitted && f.Type.errors" class="invalid-feedback">
+                  <div *ngIf="f.Type.errors.required">Type is required</div>
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
+                <label>Detected in Release</label>
+                <input type="text" formControlName="DetectedinRelease" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.DetectedinRelease.errors }"
+                />
+                <div *ngIf="submitted && f.DetectedinRelease.errors" class="invalid-feedback">
+                  <div *ngIf="f.DetectedinRelease.errors.required">Detected in Release is required</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-4">
+                <label>Established Root Cause</label>
+                <input type="text" formControlName="EstablishedRootCause" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EstablishedRootCause.errors }"
+                />
+                <div *ngIf="submitted && f.EstablishedRootCause.errors" class="invalid-feedback">
+                  <div *ngIf="f.EstablishedRootCause.errors.required">Established Root Cause is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>System component</label>
+                <input type="text" formControlName="Systemcomponent" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Systemcomponent.errors }"
+                />
+                <div *ngIf="submitted && f.Systemcomponent.errors" class="invalid-feedback">
+                  <div *ngIf="f.Systemcomponent.errors.required">System component is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Actual Fix Date</label>
+                <p-calendar formControlName="ActualFixDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+                <!-- <input type="text" formControlName="ActualFixDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ActualFixDate.errors }"
+                        />-->
+                <div *ngIf="submitted && f.ActualFixDate.errors" class="invalid-feedback" [ngClass]="{ 'is-invalid': submitted && f.ActualFixDate.errors }">
+                  <div *ngIf="f.ActualFixDate.errors.required">Actual Fix Date is required</div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label>Assigned To</label>
+                <input type="text" formControlName="AssignedTo" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.AssignedTo.errors }"
+                />
+                <div *ngIf="submitted && f.AssignedTo.errors" class="invalid-feedback">
+                  <div *ngIf="f.AssignedTo.errors.required">Assigned To is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Priority Assigned Toority</label>
+                <input type="text" formControlName="PriAssignedToority" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.PriAssignedToority.errors }"
+                />
+                <div *ngIf="submitted && f.PriAssignedToority.errors" class="invalid-feedback">
+                  <div *ngIf="f.PriAssignedToority.errors.required">Priority Assigned Toority required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Blocked Tests</label>
+                <input type="text" formControlName="BlockedTests" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.BlockedTests.errors }"
+                />
+                <div *ngIf="submitted && f.BlockedTests.errors" class="invalid-feedback">
+                  <div *ngIf="f.BlockedTests.errors.required">Blocked Tests is required</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Closed in phase</label>
+                <input type="text" formControlName="Closedinphase" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Closedinphase.errors }"
+                />
+                <div *ngIf="submitted && f.Closedinphase.errors" class="invalid-feedback">
+                  <div *ngIf="f.Closedinphase.errors.required">Closed in phase is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Closing Date</label>
+                <!-- <input type="text" formControlName="ClosingDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ClosingDate.errors }"
+                        />
+                        <div *ngIf="submitted && f.ClosingDate.errors" class="invalid-feedback">
+                          <div *ngIf="f.ClosingDate.errors.required">Closing Date is required</div>
+                        </div> -->
+                <p-calendar formControlName="ClosingDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+              </div>
+              <div class="col-md-4">
+                <label>Comments</label>
+                <input type="text" formControlName="Comments" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Comments.errors }"
+                />
+                <div *ngIf="submitted && f.Comments.errors" class="invalid-feedback">
+                  <div *ngIf="f.Comments.errors.required">Comments is required</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label>Description</label>
+                <input type="text" formControlName="Description" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Description.errors }"
+                />
+                <div *ngIf="submitted && f.Description.errors" class="invalid-feedback">
+                  <div *ngIf="f.Description.errors.required">Description is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>E2E Retest Date</label>
+                <!-- <input type="text" formControlName="E2ERetestDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.E2ERetestDate.errors }"
+                        />
+                        <div *ngIf="submitted && f.E2ERetestDate.errors" class="invalid-feedback">
+                          <div *ngIf="f.Comments.E2ERetestDate.required">E2E Retest Date is required</div>
+                        </div> -->
+                <p-calendar formControlName="E2ERetestDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+              </div>
+              <div class="col-md-4">
+                <label>Estimated Fix Date</label>
+                <!-- <input type="text" formControlName="EstimatedFixDate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.EstimatedFixDate.errors }"
+                        />
+                        <div *ngIf="submitted && f.EstimatedFixDate.errors" class="invalid-feedback">
+                          <div *ngIf="f.Comments.EstimatedFixDate.required">Estimated Fix Date is required</div>
+                        </div> -->
+                <p-calendar formControlName="EstimatedFixDate" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-calendar>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label>Fix Required By</label>
+                <input type="text" formControlName="FixRequiredBy" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.FixRequiredBy.errors }"
+                />
+                <div *ngIf="submitted && f.FixRequiredBy.errors" class="invalid-feedback">
+                  <div *ngIf="f.FixRequiredBy.errors.required">Fix Required By is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Man Days Lost</label>
+                <input type="number" formControlName="ManDaysLost" max="10" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ManDaysLost.errors }"
+                />
+                <div *ngIf="submitted && f.ManDaysLost.errors" class="invalid-feedback">
+                  <div *ngIf="f.ManDaysLost.errors.required">Man Days Lost is required</div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <label>Modified</label>
+                <input type="text" formControlName="Modified" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Modified.errors }"
+                />
+                <div *ngIf="submitted && f.Modified.errors" class="invalid-feedback">
+                  <div *ngIf="f.Modified.errors.required">Modified is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Product Service</label>
+                <input type="text" formControlName="ProductService" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ProductService.errors }"
+                />
+                <div *ngIf="submitted && f.ProductService.errors" class="invalid-feedback">
+                  <div *ngIf="f.ProductService.errors.required">ProductService is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Project</label>
+                <input type="text" formControlName="Project" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Project.errors }"
+                />
+                <div *ngIf="submitted && f.Project.errors" class="invalid-feedback">
+                  <div *ngIf="f.Project.errors.required">Project is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Raised By</label>
+                <input type="text" formControlName="RaisedBy" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.RaisedBy.errors }"
+                />
+                <div *ngIf="submitted && f.RaisedBy.errors" class="invalid-feedback">
+                  <div *ngIf="f.RaisedBy.errors.required">Raised By is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Re-Open Count</label>
+                <input type="number" formControlName="ReOpenCount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ReOpenCount.errors }"
+                />
+                <div *ngIf="submitted && f.ReOpenCount.errors" class="invalid-feedback">
+                  <div *ngIf="f.ReOpenCount.errors.required">ReOpenCount is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Reproducible</label>
+                <input type="text" formControlName="Reproducible" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Reproducible.errors }"
+                />
+                <div *ngIf="submitted && f.Reproducible.errors" class="invalid-feedback">
+                  <div *ngIf="f.Reproducible.errors.required">Reproducible is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Subject</label>
+                <input type="text" formControlName="Subject" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Subject.errors }"
+                />
+                <div *ngIf="submitted && f.Subject.errors" class="invalid-feedback">
+                  <div *ngIf="f.Subject.errors.required">Subject is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Test Area</label>
+                <input type="text" formControlName="TestArea" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TestArea.errors }"
+                />
+                <div *ngIf="submitted && f.TestArea.errors" class="invalid-feedback">
+                  <div *ngIf="f.TestArea.errors.required">Test Area is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Test Phase</label>
+                <input type="text" formControlName="TestPhase" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TestPhase.errors }"
+                />
+                <div *ngIf="submitted && f.TestPhase.errors" class="invalid-feedback">
+                  <div *ngIf="f.TestPhase.errors.required">TestPhase is required</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Test Type</label>
+                <input type="text" formControlName="TestType" maxlength="50" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.TestType.errors }"
+                />
+                <div *ngIf="submitted && f.TestType.errors" class="invalid-feedback">
+                  <div *ngIf="f.TestType.errors.required">Test Type is required</div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="row"  ></div> -->
+            <div class="row">
+              <!-- <div>
+                        <button class="btn btn-primary" class="btn btn-primary mr-1 btn-sm clearfix float-center" >Submit</button>
+                    </div> -->
+              <div class="modal-footer">
+                <button class="btn btn-primary" class="btn btn-primary mr-1 btn-sm clearfix float-center" [disabled]="!addDefects.valid"
+                  (click)="submitAddDefectDetails()">Submit</button>
+              </div>
+
+              <!-- {{addDefects.value |json}} -->
+            </div>
+
+          </p-accordionTab>
+
+
+
+
+
+
+        </p-accordion>
+        <!-- <pre>{{addDefects.value | json}}</pre> -->
+      </form>
+    </div>
+  </ng-template>
+</div>
