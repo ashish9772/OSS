@@ -9,6 +9,7 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
   declarations: [HeaderComponent, SideNavComponent],
   imports: [
     CommonModule
-  ]
+  ], 
+  exports: [HeaderComponent, SideNavComponent]
 })
 export class SharedModule { }
