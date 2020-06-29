@@ -4,6 +4,8 @@ import { RegistrationComponent } from './registration/registration.component';
 import { Routes, RouterModule } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RegistrationService } from './services/registration.service';
 
 const routes: Routes = [
   { path: '', component: RegistrationComponent }
@@ -13,8 +15,13 @@ const routes: Routes = [
   declarations: [RegistrationComponent],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
     MatCardModule
+  ],
+  providers: [
+    RegistrationService
   ]
 })
 export class RegistrationModule { }
