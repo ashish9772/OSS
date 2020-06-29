@@ -1,5 +1,115 @@
 @import "constants";
 
-p {
+.reg_container {
+    padding: 10px;
+    min-height: 100%;
     background-color: $content-bg-clr;
+    flex-direction: column;
+
+    .title_container {
+        position: relative;
+        padding: 10px 0px;
+
+        .primary {
+            font-weight: 400;
+        }
+
+        .secondary {
+            font-size: 10px;
+        }
+    }
+
+    .title_container::after {
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+        border-bottom: 1px solid rebeccapurple;
+        width: 0%;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 0%;
+        animation: grow 0.75s linear 0.75s forwards;
+    }
+
+    @keyframes grow {
+        20% {
+            width: 20%;
+        }
+        40% {
+            width: 40%;
+        }
+
+        60% {
+            width: 60%;
+        }
+
+        80% {
+            width: 80%;
+        }
+
+        100% {
+            width: 100%;
+        }
+
+    }
+    .reg_main_content {
+        padding: 15px 10px;
+        min-height: 100%;
+        flex-direction: column;
+    }
+    .reg_page_card {
+        margin-bottom: 10px;
+        .reg_page_container {
+            height: 100%;
+        }
+    }
+
+
+    .prd_core_theme_cover {
+        
+        background-image: url('https://wac-cdn.atlassian.com/dam/jcr:f59c27d5-dce1-42d9-86d3-e9f98d55fd22/confluence-hero-final@2x.png?cdnVersion=1098');
+        background-repeat: no-repeat;
+        background-size: 90%;
+        background-position: center;
+        min-height: 300px;
+    }
+
 }
+
+
+@media (min-width: 375px) { 
+    .reg_container { 
+        .prd_core_theme_cover {
+            min-height: auto;
+            min-height: 200px;
+        }
+    }
+}
+
+@media (min-width: 375px) { 
+    .reg_container { 
+        .prd_core_theme_cover {
+            min-height: auto;
+            min-height: 300px;
+        }
+    }
+}
+
+@media (min-width: 576px) { 
+    .reg_container { 
+        .prd_core_theme_cover {
+            min-height: auto;
+            background-position: top;
+            flex-basis: 60%;
+        }
+
+        .reg_page_card {
+            flex-grow: 1;
+            flex-basis: 35%;
+        }
+    }
+}
+
+
+
+

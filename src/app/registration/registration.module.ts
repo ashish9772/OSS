@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration/registration.component';
 import { Routes, RouterModule } from '@angular/router';
 
+import { MatCardModule } from '@angular/material/card';
+
 const routes: Routes = [
   { path: '', component: RegistrationComponent }
 ];
@@ -11,7 +13,8 @@ const routes: Routes = [
   declarations: [RegistrationComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MatCardModule
   ]
 })
 export class RegistrationModule { }

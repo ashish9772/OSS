@@ -1,1 +1,55 @@
-<p class="classCheck">registration works!</p>
+<div class="reg_container">
+
+  <!-- 
+    Need to move this page title to shared component 
+    configure to take class from parent component
+    primary and seconday should be dynamic
+    secondary is optional
+  -->
+  <div class="title_container">
+    <div class="title">
+      <div class="primary">Register With OSS</div>
+      <span class="secondary">Register to Experiance the fluid program management</span>
+    </div>
+  </div>
+
+
+  <div class="reg_main_content d-flex flex-column flex-sm-row">
+      
+      <div  class=" prd_core_theme_cover"></div>
+
+      <div class="reg_page_card">
+          <div class="reg_page_container">
+              <mat-card class="mat-card mat-focus-indicator reg_page">
+                  
+                  <mat-card-content>
+                      <div>
+                          <form>
+                              <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter Email Address">
+                              </div>
+                              <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter Password">
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="registerAsAdmin">
+                                <label class="form-check-label" for="registerAsAdmin">Admin</label>
+                              </div>
+                              <div class="form-group">
+                                  <label for="username">User Name</label>
+                                  <input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter User Name">
+                              </div>
+    
+                              <button type="submit" class="btn btn-primary">Register</button>
+                            </form>
+                      </div>
+                  </mat-card-content>
+              </mat-card>
+          </div>
+      </div>
+      
+  </div>
+  
+</div>
