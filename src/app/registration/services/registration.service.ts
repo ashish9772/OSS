@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
-import { delay } from 'rxjs/operators'
-
+import { tap } from 'rxjs/operators'
+import { ApiService } from 'src/app/core/services/api.service';
+import { Registeration } from '../../core/models';
 @Injectable()
 export class RegistrationService {
 
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
-  registerUser(): Observable<any>{
-    return of({}).pipe(delay(500))
+  registerUser(register: Registeration): Observable<any>{
+    return this.apiService.post('/api/auth/register', register).pipe(
+      tap( _ => console.log(_))
+    );
   }
 }

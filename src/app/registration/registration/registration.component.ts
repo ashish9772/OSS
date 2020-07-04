@@ -29,10 +29,14 @@ export class RegistrationComponent implements OnInit {
   register(){
     
     if(this.registerForm.valid){
-      this.regService.registerUser().subscribe(
+      this.regService.registerUser(this.registerForm.value).subscribe(
         () => {
+          debugger
           //this.router.navigate(['/login']);
           this.isRegistered = true;
+        },
+        (e) => {
+          console.error(e)
         }
       )
     }
