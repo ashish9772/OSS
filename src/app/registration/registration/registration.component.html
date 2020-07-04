@@ -88,7 +88,14 @@
         
     </div>
   </ng-container>
-  <ng-container *ngIf="isRegistered">
 
+  <ng-container *ngIf="isRegistered">
+    <div class="card mt-4 mx-auto text-center d-flex flex-column justify-content-center email_confirmation_container">
+      <div class="header "><h2 class="p-0 m-0">Email Verification</h2></div>
+      <div class="content mt-1">
+        <div>We have sent an email to the registered email id.</div>
+        <div>After verifying the email <a routerLink="/login" class="text-primary">click here to login</a></div>
+      </div>
+    </div>
   </ng-container>
 </div>
