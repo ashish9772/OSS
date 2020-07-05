@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RegistrationService } from './services/registration.service';
+import { RegistrationService, FormAsyncValService } from './services';
 
 const routes: Routes = [
   { path: '', component: RegistrationComponent }
@@ -21,7 +21,8 @@ const routes: Routes = [
     MatCardModule
   ],
   providers: [
-    RegistrationService
+    RegistrationService,
+    FormAsyncValService
   ]
 })
 export class RegistrationModule { }
