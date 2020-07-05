@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./registration/registration.module').then(m => m.RegistrationModule)
   },
   {
-    path: 'oss',
+    path: 'stt',
     loadChildren: () => import('./featured/featured.module').then(m => m.FeaturedModule)
   }];
 

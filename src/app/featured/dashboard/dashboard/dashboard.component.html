@@ -1,1 +1,77 @@
-<span>test</span>
+<div class="container-fluid">
+
+    <div class="row clearfix row-deck">
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Tasks</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.tasks?.length}}</h5>
+                    <span class="font-12">Completed Task: 0</span> <br>
+                    <span class="font-12">Open Task: 1</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Defects</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.defects?.length}}</h5>
+                    <span class="font-12">Resolved Defects: 0</span> <br>
+                    <span class="font-12">Open Defects: 0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Risks</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.risks?.length}}</h5>
+                    <span class="font-12">Resolved Risks: 0</span> <br>
+                    <span class="font-12">Open Risks: 0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Issues</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.issues?.length}}</h5>
+                    <span class="font-12">Resolved Issues: 0</span> <br>
+                    <span class="font-12">Open Issues: 0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Ideas</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.ideas?.length}}</h5>
+                    <span class="font-12">Implemented Ideas: 0</span> <br>
+                    <span class="font-12">New Ideas: 0</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-8 col-md-12">
+            <div class="card margintop5">
+                <div class="card-header">
+                    <h3 class="card-title">Blockers</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="number mb-0 font-32 counter">Totol Count: {{memberworkDetails?.blockers?.length}}</h5>
+                    <span class="font-12">Resolved Blockers: 0</span> <br>
+                    <span class="font-12">New Bloackers: 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

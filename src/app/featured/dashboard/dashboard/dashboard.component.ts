@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() {debugger }
+  memberworkDetails = { ein: '', tasks: [], defects: [], blockers: [], ideas: [], issues: [], risks: []};
+  constructor(private dbService: DashboardService) { }
 
   ngOnInit(): void {
+    this.getMemberWorkDetails();
+  }
+
+  getMemberWorkDetails() {
+    const url = 'project-util/user-dashboard/';
+    this.dbService.getMemberDashboardDetails(url).subscribe(res => {
+      this.memberworkDetails = res;
+    })
   }
 
 }

@@ -9,6 +9,14 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+      },
+      {
+        path: 'taskboard',
+        loadChildren: () => import('./taskboard/taskboard.module').then(m => m.TaskboardModule),
+      },
+      {
+        path: 'project-list',
+        loadChildren: () => import('./project-list/project-list.module').then(m => m.ProjectListModule),
       }
     ]
   }
