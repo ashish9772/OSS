@@ -1,6 +1,52 @@
 @import "constants.scss";
 
 .projectContainer {
-    background-color: $content-bg-clr;
+    background-color: $main-content-bg-clr;
     height: 100%;
+}
+
+.projectConfigFormContainer {
+    box-shadow: $box-shadow;
+    border-radius: 5px;
+}
+
+.projForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.formElems {
+    display: flex;
+    flex-wrap: wrap;
+    .form-group {
+        flex-basis: 100%;
+        flex-grow: 1;
+        padding: 0px 10px;
+    }
+}
+
+.formTableContainer {
+    flex-basis: 100%;
+    overflow-x: auto;
+    
+    display: flex;
+    flex-direction: column;
+    .formTable {
+        border: 1px solid $main-content-bg-clr;
+        border-radius: 5px;
+        .table td, .table th {
+            border-top: unset;
+        }    
+        thead {
+            background-color: $main-content-bg-clr;
+        }
+    }
+}
+
+@media (min-width: 768px) { 
+    .formElems {
+        .form-group {
+            flex-basis: 50%;
+        }
+    }
 }

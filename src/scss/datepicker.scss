@@ -1,0 +1,9 @@
+.form-group[datepicker="true"]{
+    position: relative;
+    .mat-datepicker-toggle {
+        padding: 0 5px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}

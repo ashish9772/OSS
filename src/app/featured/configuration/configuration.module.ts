@@ -4,7 +4,10 @@ import { ProfileCreationComponent } from './profile-creation/profile-creation.co
 import { ProjectConfigurationComponent } from './project-configuration/project-configuration.component';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 const routes: Routes = [
   {
     path: 'profile', component: ProfileCreationComponent
@@ -13,11 +16,22 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ProfileCreationComponent, ProjectConfigurationComponent],
+  declarations: [
+    ProfileCreationComponent, 
+    ProjectConfigurationComponent
+    
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
-    RouterModule.forChild(routes)
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    
   ]
 })
 export class ConfigurationModule { }
