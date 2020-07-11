@@ -43,10 +43,21 @@
     }
 }
 
+.table-title-container {
+    flex-direction: column;
+    display: flex;
+    justify-content: flex-end;
+}
+
 @media (min-width: 768px) { 
     .formElems {
         .form-group {
             flex-basis: 50%;
         }
     }
+
+    .table-title-container {
+        flex-direction: row;
+    }
+    
 }
