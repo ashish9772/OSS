@@ -1,0 +1,106 @@
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+nav.navbar {
+    background: #242939;
+    border-color: rgba(110, 120, 153, 0.3);
+    height: 60px;
+    padding: 0;
+    border-bottom: 1px solid;
+    .navbar-header {
+        width: 260px;
+        margin-left: 0 !important;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .navbar-brand {
+        color: #b9bece;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: 2px;
+    }
+    .nav-link {
+        color: #6e7899;
+    }
+    .left-nav input.navbar-search {
+        background: #282f48;
+        color: #6e7899;
+        max-width: 500px;
+    border-radius: 0;
+    border: none;
+    height: 40px;
+    font-size: .9rem;
+    }
+    .right-nav {
+        height: 100%!important;
+        border-top: none;
+        background: 0 0!important;
+        padding-top: 1rem;
+    padding-bottom: 1rem;
+    ul {
+        margin-left: auto;
+        flex-wrap: nowrap;
+        display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    li{
+        padding: 0;
+        flex: 1 1 0;
+        max-width: 110px;
+        .nav-alert {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            border: 3px solid #1c1e21;
+            -webkit-transform: translateX(13px);
+            transform: translateX(13px);
+        }
+        .nav-alert.notifications {
+            background-color: #ff61c5;
+            box-shadow: 0 0 4px #ff61c5;
+        }
+        .nav-alert.messages {
+            background-color: #61b8ff;
+            box-shadow: 0 0 4px #61b8ff;
+        }
+        .nav-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        
+            .link-text {
+                display: none;
+            }
+        }
+    }
+    }
+    }
+    i{
+        border-color: #6e7899;
+        background: #282f48;
+        font-size: 1.1rem;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 0;
+    }
+}
+.w-100 {
+    width: 100%!important;
+}
+.m-0 {
+    margin: 0!important;
+}
+.ml-1, .mx-1 {
+    margin-left: .25rem!important;
+}
