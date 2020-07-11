@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-
+import * as moment from 'moment';
 export interface ROLE {
   adminRole: boolean,
   id: number,
@@ -31,8 +31,9 @@ export class ProjectConfigurationComponent implements OnInit {
   members: MEMBER[] = [ {} as MEMBER ];
   addMemEvent$ = new BehaviorSubject(null);
   removeMemEvent$ = new BehaviorSubject(null);
+  defaultEndDate = moment().toISOString();
   constructor(private fb: FormBuilder) {
-    
+    let m = moment;
   }
 
   ngOnInit(): void {
@@ -45,8 +46,8 @@ export class ProjectConfigurationComponent implements OnInit {
       {"ein":"manojkthakur@gmail.com","projectID":"","name":"Manoj","email":"manojkthakur@gmail.com","skill":"Delivery","role":[{"role":"Delivery Head"}]}];
     this.projConfigForm = this.fb.group({
       projectId: ['', Validators.required],
-      projectName: ['', Validators.required],
-      pStartDate: [null, Validators.required],
+      projectName: ['21', Validators.required],
+      pStartDate: [moment().toISOString(), Validators.required],
       pEndDate: ['', Validators.required],
       aStartDate: [''],
       aEndDate: [''],
@@ -78,14 +79,6 @@ export class ProjectConfigurationComponent implements OnInit {
   getFormArray(array: string): FormArray {
     const fa = this.projConfigForm.get(array) as FormArray;
     return fa;
-  }
-
-  getMemInfo(email: string): object{
-    const index = this.membersFreez.findIndex(mem => email === mem.email);
-    if(index !== -1){
-      return this.membersFreez[index]
-    }
-    return null;
   }
 
   insertMem(){

@@ -53,7 +53,7 @@
 
                 <div class="form-group" [attr.datepicker]="true">
                     <label for="pEndDate">Project EndDate</label>
-                    <input readonly [matDatepicker]="pEndDate" formControlName="pEndDate" type="text" class="form-control" id="pEndDate"  placeholder="Select Project EndDate">
+                    <input [min]="defaultEndDate" readonly [matDatepicker]="pEndDate" formControlName="pEndDate" type="text" class="form-control" id="pEndDate"  placeholder="Select Project EndDate">
                     <mat-datepicker-toggle matSuffix [for]="pEndDate"></mat-datepicker-toggle>
                     <mat-datepicker #pEndDate></mat-datepicker>
                     <div>  
