@@ -53,7 +53,7 @@
 
                 <div class="form-group" [attr.datepicker]="true">
                     <label for="pEndDate">Project EndDate</label>
-                    <input [min]="defaultEndDate" readonly [matDatepicker]="pEndDate" formControlName="pEndDate" type="text" class="form-control" id="pEndDate"  placeholder="Select Project EndDate">
+                    <input [min]="defaultStartDate" readonly [matDatepicker]="pEndDate" formControlName="pEndDate" type="text" class="form-control" id="pEndDate"  placeholder="Select Project EndDate">
                     <mat-datepicker-toggle matSuffix [for]="pEndDate"></mat-datepicker-toggle>
                     <mat-datepicker #pEndDate></mat-datepicker>
                     <div>  
@@ -88,7 +88,7 @@
 
                 <div class="form-group" [attr.datepicker]="true">
                     <label for="aEndDate">Actual End Date</label>
-                    <input readonly [matDatepicker]="aEndDate" formControlName="aEndDate" type="text" class="form-control" id="aEndDate"  placeholder="Select Actual End Date">
+                    <input [min]="defaultActualEndDate" readonly [matDatepicker]="aEndDate" formControlName="aEndDate" type="text" class="form-control" id="aEndDate"  placeholder="Select Actual End Date">
                     <mat-datepicker-toggle matSuffix [for]="aEndDate"></mat-datepicker-toggle>
                     <mat-datepicker #aEndDate></mat-datepicker>
 
@@ -165,6 +165,14 @@
                     </div>
                 </div>
             </div>
+
+            <div class="input-group mb-2">
+                <button type="submit" class="btn btn-primary ">
+                    <span class="indicator"></span>
+                    <span>Submit</span>
+                </button>
+            </div>
+
         </form>    
 
     </div>

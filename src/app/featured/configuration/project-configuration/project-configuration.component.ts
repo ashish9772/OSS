@@ -31,7 +31,9 @@ export class ProjectConfigurationComponent implements OnInit {
   members: MEMBER[] = [ {} as MEMBER ];
   addMemEvent$ = new BehaviorSubject(null);
   removeMemEvent$ = new BehaviorSubject(null);
+  defaultStartDate = moment().toISOString();
   defaultEndDate = moment().toISOString();
+  defaultActualEndDate = null;
   constructor(private fb: FormBuilder) {
     let m = moment;
   }
@@ -47,8 +49,8 @@ export class ProjectConfigurationComponent implements OnInit {
     this.projConfigForm = this.fb.group({
       projectId: ['', Validators.required],
       projectName: ['21', Validators.required],
-      pStartDate: [moment().toISOString(), Validators.required],
-      pEndDate: ['', Validators.required],
+      pStartDate: [this.defaultStartDate, Validators.required],
+      pEndDate: [this.defaultEndDate, Validators.required],
       aStartDate: [''],
       aEndDate: [''],
       notes: [''],
@@ -56,6 +58,8 @@ export class ProjectConfigurationComponent implements OnInit {
     });
 
     this.getFormArray('projectMembers').controls = this.genMemCtrls();
+    
+    // add member to the array
     this.addMemEvent$
     .pipe(
       filter(a => a)
@@ -65,12 +69,36 @@ export class ProjectConfigurationComponent implements OnInit {
         this.insertMem()
       }
     )
+
+    // remove member to the array
+    // based on the index
     this.removeMemEvent$.subscribe(
       index => {
         this.removeMem(index)
       }
-      )
+    )
+
+    // start Date changes
+    // change end date 
+    this.getFormCntrl('pStartDate').valueChanges.subscribe(
+      (value) => {
+        this.defaultStartDate = moment(value).toISOString();
+        this.getFormCntrl('pEndDate').patchValue('');
+      }
+    )
+
+    // actual date changes
+    // change actual end date
+    this.getFormCntrl('aStartDate').valueChanges.subscribe(
+      (value) => {
+        this.getFormCntrl('aEndDate').patchValue('');
+        this.defaultActualEndDate = moment(value).toISOString();
+      }
+    )
+
+
   }
+
 
   getFormCntrl(cntrl: string): FormControl{
     return this.projConfigForm.get(cntrl) as FormControl
