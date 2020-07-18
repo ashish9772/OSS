@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { BehaviorSubject, Subscription, of } from 'rxjs';
+import { map, filter, tap, delay } from 'rxjs/operators';
 import * as moment from 'moment';
+import { isNull } from 'util';
 export interface ROLE {
   adminRole: boolean,
   id: number,
@@ -15,7 +16,8 @@ export interface MEMBER {
   name: string,
   role: ROLE[],
   skill: string,
-  type: string
+  type: string,
+  subs?: Subscription
 }
 @Component({
   selector: 'app-project-configuration',
@@ -24,19 +26,35 @@ export interface MEMBER {
 })
 export class ProjectConfigurationComponent implements OnInit {
 
-  //[{"ein":"muthakur1979@gmail.com","projectID":"1","name":"Mukesh2","email":"muthakur1979@gmail.com","skill":"Delivery","role":[{"groupName":"Technical","roleDescription":"Technical Manager"}]},{"ein":"mukeshtechhead@gmail.com","projectID":"1","name":"Mukesh1","email":"mukeshtechhead@gmail.com","skill":"Java","role":[{"groupName":"Technical","roleDescription":"Technical Architect"}]},{"ein":"vikasgupta78@gmail.com","projectID":"2","name":"Vikas Sir ","email":"vikasgupta78@gmail.com","skill":"stakeholder","role":[{"groupName":"Technical","roleDescription":"Technical Architect"}]},{"ein":"namans331@gmail.com","projectID":"97","name":"namans331@gmail.com","email":"namans331@gmail.com","skill":"UI","role":[{"groupName":"Technical","roleDescription":"Technical Architect"}]},{"ein":"kkmishragcp@gmail.com","projectID":"97","name":"Babs Bro","email":"kkmishragcp@gmail.com","skill":"Java","role":[{"groupName":"Technical","roleDescription":"Technical Manager"}]},{"ein":"manojkthakur@gmail.com","projectID":"","name":"Manoj","email":"manojkthakur@gmail.com","skill":"Delivery","role":[]}]
-  //{"Design":["Design Manager","Design Lead","Designer"],"Stake Holder":["Stake Holder Admin","Stake Holder Member"],"Technical":["Technical Manager","Technical Architect","Technical Lead","Developer"],"Infra":["Infra Lead","Infra Developer"],"Delivery":["Delivery Manager","Delivery Manager"],"Admin":["Project Admin","Super Admin"],"Testing":["Test Manager","Test Lead","Tester"]}
   projConfigForm: FormGroup;
+  
+  //members info from the network call
+  //no add/delete opr is done on this instance
   membersFreez: any[]
-  members: MEMBER[] = [ {} as MEMBER ];
+
+  //the table content is generated based on this array
+  //form-contorls are mapped to each item of the array
+  //hence value of the table is derived from the form-control
+  // [M] ==> [FC] => [value]
+  //any addition/deletion of the member item
+  //insertMem/removeMem function has to be invoked
+  //to have a sync 
+  members: MEMBER[] = [  ];
+
+  // add/remove button event to add the row in the table
   addMemEvent$ = new BehaviorSubject(null);
   removeMemEvent$ = new BehaviorSubject(null);
+  
+  //dates default values
   defaultStartDate = moment().toISOString();
   defaultEndDate = moment().toISOString();
   defaultActualEndDate = null;
-  constructor(private fb: FormBuilder) {
-    let m = moment;
-  }
+  
+
+  submiting: boolean = false;
+  
+  constructor(private fb: FormBuilder) {  }
+
 
   ngOnInit(): void {
     this.membersFreez = [
@@ -48,7 +66,7 @@ export class ProjectConfigurationComponent implements OnInit {
       {"ein":"manojkthakur@gmail.com","projectID":"","name":"Manoj","email":"manojkthakur@gmail.com","skill":"Delivery","role":[{"role":"Delivery Head"}]}];
     this.projConfigForm = this.fb.group({
       projectId: ['', Validators.required],
-      projectName: ['21', Validators.required],
+      projectName: ['', Validators.required],
       pStartDate: [this.defaultStartDate, Validators.required],
       pEndDate: [this.defaultEndDate, Validators.required],
       aStartDate: [''],
@@ -57,7 +75,6 @@ export class ProjectConfigurationComponent implements OnInit {
       projectMembers: this.fb.array([])
     });
 
-    this.getFormArray('projectMembers').controls = this.genMemCtrls();
     
     // add member to the array
     this.addMemEvent$
@@ -70,9 +87,10 @@ export class ProjectConfigurationComponent implements OnInit {
       }
     )
 
-    // remove member to the array
+    // remove member from the array
     // based on the index
-    this.removeMemEvent$.subscribe(
+    // unsub to the listerner attached to the form control
+    this.removeMemEvent$.pipe(filter(_ => !isNull(_))).subscribe(
       index => {
         this.removeMem(index)
       }
@@ -100,48 +118,68 @@ export class ProjectConfigurationComponent implements OnInit {
   }
 
 
-  getFormCntrl(cntrl: string): FormControl{
+  private getFormCntrl(cntrl: string): FormControl{
     return this.projConfigForm.get(cntrl) as FormControl
   }
 
-  getFormArray(array: string): FormArray {
+  private getFormArray(array: string): FormArray {
     const fa = this.projConfigForm.get(array) as FormArray;
     return fa;
   }
 
+  /*
+    prepare an empty member object
+    push to the members array
+    create the formcontrol 
+    listen to the changes on the form-control
+    add the subscription token to the memeber object
+    remove the subscription token when form-contorl is removed
+  */
   insertMem(){
     const mem = { } as MEMBER;
     this.members.push(mem)
     this.members = [...this.members];
     const ctrl = this.fb.control('');
     const subs = this.listenForMemValueChanges(ctrl)
-    mem['subs'] = subs;
+    mem.subs = subs;
 
     const projectMemFormArray = this.getFormArray('projectMembers');
     projectMemFormArray.insert(projectMemFormArray.controls.length, ctrl)
   }
 
+  //update the memebers array 
+  //unsub for the events on the fc
+  //remove the fc from fa
+  // [M] ==> [fc] , must be in sync
   removeMem(index: number){
+    this.members[index].subs.unsubscribe();
     this.members.splice(index,1);
     this.members = [ ...this.members ];
     const projectMemFormArray = this.getFormArray('projectMembers')
+  
     projectMemFormArray.removeAt(index)
   }
 
-  genMemCtrls(): FormControl[]{
-    return this.members.map(mem => {
-      const ctrl = this.fb.control('');
-      const subs = this.listenForMemValueChanges(ctrl)
-      mem['subs'] = subs;
-      return ctrl;
-    });
-  }
+  // private genMemCtrls(): FormControl[]{
+  //   return this.members.map(mem => {
+  //     const ctrl = this.fb.control('');
+  //     const subs = this.listenForMemValueChanges(ctrl)
+  //     mem.subs = subs;
+  //     return ctrl;
+  //   });
+  // }
 
+
+  // when the value of the contorl Changes 
+  // read the info related to the value selecetd 
+  // to represent the same in the table
   listenForMemValueChanges(ctrl: FormControl): Subscription{
     const ctrlRef = ctrl;
     return ctrl.valueChanges
     .pipe(
       map(value => {
+        // fc-value ==> memeberFreez ==> index of item , this index will be used to get the complete info of the member
+        // fc ==> fa ==> index, this index is used to update the member with the full info
         return {
           refIndex: this.membersFreez.findIndex(mem => mem.email === value),
           renderIndex: this.getFormArray('projectMembers').controls.findIndex( memCtrl => ctrlRef === memCtrl )
@@ -149,9 +187,52 @@ export class ProjectConfigurationComponent implements OnInit {
       })
     )
     .subscribe((value) => {
-      this.members[value.renderIndex] = this.membersFreez[value.refIndex] ? this.membersFreez[value.refIndex] : {}
+      // member object is updated with the full info of the member
+      this.members[value.renderIndex] = this.membersFreez[value.refIndex] ? { ...this.members[value.renderIndex], ...this.membersFreez[value.refIndex] } : {}
     });
   }
 
+  submitProjectConfig(){
+    of(1).pipe(
+      tap(_ => this.submiting = true ),
+      delay(400),
+      tap(_ => this.submiting = false, _ => this.submiting = false)
+    ).subscribe(
+      ( data ) => {
+        console.log(data)
+      },
+      () => {}, 
+      () => {
+        this.projectConfigformReset();
+    })
+    
+  }
+
+  resetProjectConfig(event: Event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.projectConfigformReset();
+  }
+
+  private resetMembers(){
+    this.members = [];
+    this.getFormArray('projectMembers').controls = [];
+  }
+
+
+  private projectConfigformReset(){
+    this.projConfigForm.reset({
+      projectId: '',
+      projectName: '',
+      pStartDate: this.defaultStartDate,
+      pEndDate: this.defaultEndDate,
+      aStartDate: '',
+      aEndDate: '',
+      notes: '',
+      projectMembers: this.fb.array([])
+    });
+    this.resetMembers()
+
+  }
   
 }
