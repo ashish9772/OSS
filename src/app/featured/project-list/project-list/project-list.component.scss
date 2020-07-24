@@ -1,0 +1,48 @@
+@import 'constants.scss';
+
+.projectListContainer {
+    background-color: $main-content-bg-clr;
+    height: 100%;
+}
+
+.configInfoContainer {
+    box-shadow: $box-shadow;
+    .title {
+        opacity: .8;
+        font-weight: bold;
+        color: $header-color;
+    }
+    .team-info {
+        display: flex;
+        li+li {
+            margin-left: -10px;
+        }
+    }
+    .note-text {
+        flex-basis: 40%;
+    } 
+}
+
+.statsContent {
+    box-shadow: $box-shadow;
+    border-radius: 5px 5px 0px 0px;
+    .card-title {
+        padding: 10px;
+        border-radius: 5px 5px 0px 0px;
+        background-color: aliceblue;
+        color: $header-color;
+        font-weight: 800;
+        font-size: 1rem;
+        border-bottom: 0.5px solid ;
+    }
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card-container {
+        flex-basis: 40%;
+        padding: 10px;
+        flex-grow: 1;
+    }
+}

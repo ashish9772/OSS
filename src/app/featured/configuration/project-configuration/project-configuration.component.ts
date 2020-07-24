@@ -232,6 +232,21 @@ export class ProjectConfigurationComponent implements OnInit {
       projectMembers: this.fb.array([])
     });
     this.resetMembers()
+  }
+
+  // will take the form data
+  // will add members key with projectMembers, stackHolder keys to it
+  // based on the members data, the members are separated to respective array
+  splitMembers(projectConfigData): object{
+    projectConfigData['members'] = {
+      projectMembers: [],
+      stackHolders: []
+    }
+
+    return this.members.reduce((data, m) => {
+      return projectConfigData;
+    }, projectConfigData);
+
 
   }
   

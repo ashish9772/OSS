@@ -1,0 +1,13 @@
+<div [ngClass]="[appearance, theme.bg].join(' ')" class="card mb-3 widget-content">
+    <div [ngClass]="theme.textClr" class="widget-content-wrapper ">
+        <div class="widget-content-left">
+            <div class="widget-heading">Total Orders</div>
+            <!-- <div class="widget-subheading">Last year expenses</div> -->
+        </div>
+        <div class="widget-content-right">
+            <div class="widget-numbers p-2" >
+                <span [ngClass]="theme.titleClr">New - </span> <span [ngClass]="theme.countClr">1896</span>
+            </div>
+        </div>
+    </div>
+</div>
