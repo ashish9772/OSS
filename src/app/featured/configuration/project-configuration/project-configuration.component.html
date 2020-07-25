@@ -1,6 +1,6 @@
 <div class="projectContainer mb-1 p-4">
     <div class="projectConfigFormContainer bg-white p-2">
-        <form class="projForm" [formGroup]="projConfigForm" (ngSubmit)="0">
+        <form class="projForm" [formGroup]="projConfigForm" (ngSubmit)="submitProjectConfig()">
             <div class="formElems">
 
                 <div class="form-group">
@@ -124,7 +124,7 @@
 
                 <div  class="formTableContainer">
                     <div class="mb-2 table-title-container">
-                        <span (click)="addMemEvent$.next('add')" class="bg-info text-white cardStyle"><i class="fas fa-plus"></i> Add Member</span>
+                        <span (click)="addMemEvent$.next('add')" class="btn bg-info text-white cardStyle"><i class="fas fa-plus"></i> Add Member</span>
                     </div>
                     <div class="table-responsive formTable">
                         <table class="table">
@@ -145,12 +145,6 @@
                                             <option value="">-- Select Member Name --</option>
                                             <option *ngFor="let mem of membersFreez" [value]="mem.email">{{mem.name}}</option>
                                         </select>
-                                        <!-- <input [matAutocomplete]="auto" [formControlName]="i" type="text" class="form-control">
-                                        <mat-autocomplete  #auto="matAutocomplete">
-                                            <mat-option *ngFor="let street of filteredStreets | async" [value]="street">
-                                                {{street}}
-                                              </mat-option>
-                                        </mat-autocomplete> -->
                                     </div>                                    
                                 </th>
                                 <td>{{ memCtrlInfo.email}}</td>
@@ -166,10 +160,13 @@
                 </div>
             </div>
 
-            <div class="input-group mb-2">
-                <button type="submit" class="btn btn-primary ">
-                    <span class="indicator"></span>
-                    <span>Submit</span>
+            <div class='mt-2 form-actions'>
+                <button [disabled]="submiting || !projConfigForm.valid" class=" btn btn-primary mr-1" type="submit">
+                    <span  [ngClass]="{'spinner-border spinner-border-sm': submiting}" class="" role="status" aria-hidden="true"></span>
+                    Submit
+                </button>
+                <button (click)="resetProjectConfig($event)" class="mr-1 btn btn-outline-secondary">
+                    Reset
                 </button>
             </div>
 
