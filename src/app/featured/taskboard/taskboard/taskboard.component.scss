@@ -1,0 +1,49 @@
+.card-title {
+    text-transform: uppercase;
+    color: rgba(13,27,62,0.7);
+    font-weight: bold;
+    font-size: .88rem;
+}
+
+.widget-content {
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+}
+
+.widget-content-outer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.widget-content .widget-content-wrapper {
+    display: flex;
+    flex: 1;
+    position: relative;
+    align-items: center;
+}
+
+.fsize-1 {
+    font-size: .95rem !important;
+}
+.pr-2, .px-2 {
+    padding-right: .5rem !important;
+}
+
+.widget-content .widget-content-right {
+    margin-left: auto;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.progress {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    font-size: .75rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+}

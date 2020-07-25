@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TaskBoardService } from '../services/taskboard.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-taskboard',
@@ -6,10 +9,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./taskboard.component.scss']
 })
 export class TaskboardComponent implements OnInit {
-
-  constructor() { }
+  projectData: any;
+  constructor(private taskService: TaskBoardService, private route: ActivatedRoute) {
+    this.route.paramMap.pipe(
+      switchMap(params => this.taskService.getProjectDetails(+ params.get('id')))
+    ).subscribe(projectData => {
+      this.projectData = projectData;
+      console.log('this.projectData', JSON.stringify(this.projectData))
+    }) 
+   }
 
   ngOnInit(): void {
+
   }
 
 }

@@ -11,7 +11,7 @@ const routes: Routes = [
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
-        path: 'taskboard',
+        path: 'taskboard/:id',
         loadChildren: () => import('./taskboard/taskboard.module').then(m => m.TaskboardModule),
       },
       {

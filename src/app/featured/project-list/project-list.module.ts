@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ProjectListService } from './services/project-list.service';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     CommonModule,
     HttpClientModule,
     RouterModule.forChild(routes)
-  ]
+  ],
+  providers: [ProjectListService]
 })
 export class ProjectListModule { }
